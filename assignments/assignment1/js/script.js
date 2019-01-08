@@ -28,6 +28,9 @@ let avatar = {
 let food = {
   x: 0,
   y: 0,
+  vx:0,
+  vy:0,
+  maxSpeed:5,
   size: 64,
   color: '#55cccc'
 }
@@ -49,6 +52,8 @@ function setup() {
   createCanvas(windowWidth,windowHeight);
   positionFood();
   noCursor();
+  changeFoodVelocity();
+  setInterval(changeFoodVelocity, 500);
 }
 
 
@@ -67,6 +72,7 @@ function draw() {
   // Otherwise we handle the game
   background(0);
   updateAvatar();
+  updateFood();
   checkCollision();
   displayAvatar();
   displayFood();
@@ -84,6 +90,31 @@ function updateAvatar() {
   avatar.size = constrain(avatar.size - AVATAR_SIZE_LOSS,0,avatar.maxSize);
   if (avatar.size === 0) {
     avatar.active = false;
+  }
+}
+
+//updateFood()
+//
+//moves the food around the screen
+//screen wrap
+function updateFood(){
+  // Add velocity to position
+  food.x += food.vx;
+  food.y += food.vy;
+
+  //Wrap food movement around edges of the canvas
+  if (food.x < 0) {
+    food.x += width;
+  }
+  else if (food.x > width) {
+    food.x -= width;
+  }
+
+  if (food.y < 0) {
+    food.y += height;
+  }
+  else if (food.y > height) {
+    food.y -= height;
   }
 }
 
@@ -132,4 +163,12 @@ function displayFood() {
 function positionFood() {
   food.x = random(0,width);
   food.y = random(0,height);
+}
+
+//changeFoodVelocity()
+//
+//changes velocity of Food
+function changeFoodVelocity(){
+  food.vx = random(-food.maxSpeed, food.maxSpeed);
+  food.vy = random(-food.maxSpeed, food.maxSpeed);
 }
