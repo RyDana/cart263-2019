@@ -34,3 +34,14 @@ div {
   background-color: #fdff91;
   color: #3c3d21;
 }
+
+.endscreen{
+  display: none;
+  text-align: center;
+}
+
+#winOrLose{
+  font-size: 3em;
+  width: 100%;
+  padding: 20px;
+}

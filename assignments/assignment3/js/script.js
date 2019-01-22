@@ -53,6 +53,14 @@ function spanFound(){
 
   //change html
   $('#secret-count').text(numFound);
+  $('#final-count').text(numFound);
+
+  //show win endscreen
+  if(numFound === $('.secret').length){
+    $('div').hide();
+    $('#winOrLose').text('You Won');
+    $('.endscreen').show();
+  }
 
 }
 
@@ -73,6 +81,11 @@ function spanClicked() {
 // elements in the selection
 function update() {
   $('.redacted').each(updateSpan);
+
+  if($('.redacted').length === 0){
+    $('div').hide();
+    $('.endscreen').show();
+  }
 }
 
 // updateSpan()
