@@ -3,7 +3,7 @@
 /*****************
 
 Raving Redactionist
-Pippin Barr
+Dana Ryashy
 
 You are redacting a document, but it keeps coming unredacted!
 Click the secret information to hide it, don't let all the
@@ -14,6 +14,9 @@ secrets become revealed!
 // A place to store the jQuery selection of all spans
 let $spans;
 
+//A place to store the numer of secrets found
+let numFound;
+
 // When the document is loaded we call the setup function
 $(document).ready(setup);
 
@@ -22,12 +25,37 @@ $(document).ready(setup);
 // Sets the click handler and starts the time loop
 function setup() {
   // Save the selection of all spans (since we do stuff to them multiple times)
-  $spans = $('span');
+  //$spans = $('span');
+
+  //initiate score
+  numFound = 0;
+
   // Set a click handler on the spans (so we know when they're clicked)
-  $spans.on('click',spanClicked);
+  $('span').not('.secret').on('click',spanClicked);
   // Set an interval of 500 milliseconds to update the state of the page
   setInterval(update,500);
+
+  //mouse over handler for secret words
+  $('.secret').on('mouseover', spanFound);
 };
+
+//spanFound()
+//
+//when a secret span is moused over
+//highlight it in yellow
+function spanFound(){
+  console.log('found');
+  //add found class and remove event handler
+  $(this).addClass('found').off('mouseover');
+
+  //increase score
+  numFound++;
+
+  //change html
+  $('#secret-count').text(numFound);
+
+}
+
 
 // spanClicked()
 //
@@ -44,7 +72,7 @@ function spanClicked() {
 // using jQuery's each() function which calls the specified function on _each_ of the
 // elements in the selection
 function update() {
-  $spans.each(updateSpan);
+  $('.redacted').each(updateSpan);
 }
 
 // updateSpan()
