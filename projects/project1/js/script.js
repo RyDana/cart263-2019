@@ -38,7 +38,7 @@ $(document).ready(function(){
 
   $( ".droppable" ).droppable({
     accept: function(item){
-      return ($(this).attr('num') === item.attr('num'));
+      return $(this).attr('num') === item.attr('num');
     },
     drop: function( event, ui ) {
       ui.helper.data('dropped', true);
@@ -65,12 +65,7 @@ $(document).ready(function(){
             $(this).animate(pos, 800, "easeOutBounce");
           }
         });
-
       }, 3000);
     }
   });
-
-
-
-
 });

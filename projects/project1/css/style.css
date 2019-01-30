@@ -3,15 +3,98 @@
 This is the style file for this project.
 
 **********************************************/
-
-.draggable {
-  height: 100px;
-  width:100px;
-  background-color: #f00;
+.container{
+  width:100%;
+  display: grid;
+  grid-gap: 0px;
 }
 
-.droppable {
-  height: 110px;
-  width:110px;
-  background-color: #eee;
+.dragG1 {
+  grid-column:1;
+  grid-row: 1;
+}
+
+.dragG2 {
+  grid-column:3;
+  grid-row: 1;
+}
+
+/* .draggables > div {
+  margin: 0px;
+  display: inline-block;
+} */
+
+.droppables {
+  grid-column:2;
+  grid-row: 1;
+  display: grid;
+  grid-auto-columns: 120px;
+  grid-auto-rows: 70px;
+  margin-top: 80px;
+  grid-gap: 10px;
+}
+
+.droppables > div {
+  background-color: rgba(0, 0, 0, 0.2);
+  text-align: center;
+  padding: 20px 0;
+  font-size: 30px;
+}
+
+#droppable0 {
+  grid-column: 1 / span 2;
+  grid-row: 1/ span 4;
+}
+#droppable1 {
+  grid-column: 3;
+  grid-row: 1/ span 2;
+}
+#droppable2 {
+  grid-column: 4 / span 3;
+  grid-row: 1/ span 2;
+}
+#droppable3 {
+  grid-column: 3 / span 2;
+  grid-row: 3/ span 2;
+}
+#droppable4 {
+  grid-column: 5 / span 2;
+  grid-row: 3/ span 3;
+}
+#droppable5 {
+  grid-column: 1 / span 4;
+  grid-row: 5;
+}
+
+
+
+#draggable0 {
+  width: 250px;
+  height: 310px;
+  background-color: red;
+}
+#draggable1 {
+  width: 120px;
+  height: 150px;
+  background-color: orange;
+}
+#draggable2 {
+  width: 380px;
+  height: 150px;
+  background-color: yellow;
+}
+#draggable3 {
+  width: 250px;
+  height: 150px;
+  background-color: green;
+}
+#draggable4 {
+  width: 250px;
+  height: 230px;
+  background-color: blue;
+}
+#draggable5 {
+  width: 510px;
+  height: 70px;
+  background-color: purple;
 }
