@@ -1,0 +1,17 @@
+/*********************************************
+
+This is the style file for this project.
+
+**********************************************/
+
+.draggable {
+  height: 100px;
+  width:100px;
+  background-color: #f00;
+}
+
+.droppable {
+  height: 110px;
+  width:110px;
+  background-color: #eee;
+}
