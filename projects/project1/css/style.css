@@ -36,9 +36,12 @@ body{
   display: grid;
   width:100%;
 }
-.draggables div{
+.draggable{
   position: absolute;
   bottom: 0;
+  -moz-box-shadow: 6px 4px 0px rgba(0,0,0,0.5);
+  -webkit-box-shadow: 6px 4px 0px rgba(0,0,0,0.5);
+  box-shadow: 6px 4px 0px rgba(0,0,0,0.5);
 }
 
 /* .dragG2 {
