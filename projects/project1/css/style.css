@@ -28,12 +28,23 @@ body{
 .dragG1 {
   grid-column:1;
   grid-row: 1;
+  width:100%;
+
 }
 
-.dragG2 {
+.draggables{
+  display: grid;
+  width:100%;
+}
+.draggables div{
+  position: absolute;
+  bottom: 0;
+}
+
+/* .dragG2 {
   grid-column:3;
   grid-row: 1;
-}
+} */
 
 /* .draggables > div {
   margin: 0px;
@@ -46,6 +57,7 @@ body{
   display: grid;
   grid-auto-columns: 120px;
   grid-auto-rows: 70px;
+  margin: auto;
   margin-top: 80px;
   grid-gap: 10px;
 }
@@ -82,7 +94,9 @@ body{
   grid-row: 5;
 }
 
-
+/* .draggables *{
+  display: none;
+} */
 
 #draggable0 {
   width: 250px;

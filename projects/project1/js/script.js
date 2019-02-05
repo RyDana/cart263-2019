@@ -9,8 +9,12 @@ author, and this description to match your project!
 ******************/
 let $draggables;
 let $droppables;
+let iDraggable;
 
 $(document).ready(function(){
+
+  // iDraggable = 1;
+  // showDraggable();
 
   $( ".draggable" ).draggable({
     containment: "window",
@@ -18,6 +22,10 @@ $(document).ready(function(){
     stack: ".draggable",
     start: function(event, ui) {
         ui.helper.data('dropped', false);
+        // if(iDraggable <7){
+        //   showDraggable();
+        // }
+
     },
     stop: function( event, ui ) {
       if(ui.helper.data('dropped') === false){
@@ -68,4 +76,20 @@ $(document).ready(function(){
       }, 3000);
     }
   });
+
+
+
 });
+
+function showDraggable(){
+  let $draggable = $( ".draggable:nth-child("+iDraggable+")");
+  $draggable.position({
+      my: "center",
+      // at: "left+" + ($draggable.width()/2 + 20) +
+      //   " bottom-" + ($draggable.height()/2 + 20),
+      at: "left+" + ($draggable.width()/2 + 20),
+      of: window
+    })
+    .show();
+  iDraggable++;
+}
