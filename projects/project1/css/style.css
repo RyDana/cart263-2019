@@ -3,6 +3,22 @@
 This is the style file for this project.
 
 **********************************************/
+body{
+  background-color: salmon;
+  margin: 0px;
+}
+
+.floor{
+  width:100%;
+  height: 10%;
+  border-top: thick solid black;
+  z-index: -100;
+  position: fixed;
+  bottom: 0px;
+  background-color: brown;
+
+}
+
 .container{
   width:100%;
   display: grid;
@@ -35,7 +51,7 @@ This is the style file for this project.
 }
 
 .droppables > div {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(30, 0, 0, 0.1);
   text-align: center;
   padding: 20px 0;
   font-size: 30px;
