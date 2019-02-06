@@ -52,6 +52,8 @@ $(document).ready(function(){
         //Use of helper to detect superposition with the appropriate
         //droppable. Initiated in false state since draggable is not
         //on desired droppable if dragging possible (when not on droppable)
+        //(Technique obtained through StackExchange. URL:
+        //https://stackoverflow.com/questions/8092771/jquery-drag-and-drop-checking-for-a-drop-outside-a-droppable)
         ui.helper.data('dropped', false);
 
         let $this = $(this);
