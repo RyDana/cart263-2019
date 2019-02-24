@@ -3,7 +3,7 @@
 /*****************
 
 Slamina
-rraB nippiP
+yhsayR anaD
 
 A simple guessing game based on voice synthesis. The computer reads out an
 animal name, but it reads it backwards. The user selects the animal they
@@ -19,8 +19,6 @@ Animal names from:
 https://github.com/dariusk/corpora/blob/master/data/animals/common.json
 
 ******************/
-
-// An array of animal names that we use to create our guessing game
 let animals = [
   "aardvark",
   "alligator",
@@ -157,115 +155,124 @@ let animals = [
   "yak",
   "zebra"
 ];
-
-// We need to track the correct answer for each round
 let correctAnimal;
-// We also track all the possibly answers (mostly so we can switch their order around)
 let answers = [];
-
-// How many possible answers there are per round
+let score;
+let voiceTries;
 const NUM_OPTIONS = 5;
 
-// Get setup!
 $(document).ready(setup);
 
-// setup()
-//
-// In order to be able to play sound, our setup involves clicking once
-// to actually start the game.
 function setup() {
   $('#click-to-begin').on('click',startGame);
 }
 
-// startGame()
-//
-// Remove the click to begin and set up a round of play
+
 function startGame() {
   $('#click-to-begin').remove();
-
+  $('#scoreDiv').show();
+  score = 0;
   newRound();
 }
 
-// newRound()
-//
-// Generates a set of possible answers randomly from the set of animals
-// and adds buttons for each one. Then chooses the correct answer randomly.
 function newRound() {
-  // We empty the answer array for the new round
+  voiceTries = 0;
   answers = [];
-  // Loop for each option we'll offter
   for (let i = 0; i < NUM_OPTIONS; i++) {
-    // Choose the answer text randomly from the animals array
     let answer = animals[Math.floor(Math.random() * animals.length)];
-    // Add a button with this label
     addButton(answer);
-    // Add this answer to the answers array
     answers.push(answer);
   }
 
-  // Choose a random answer from the answers as our correct answer
   correctAnimal = answers[Math.floor(Math.random() * answers.length)];
-
-  // Say the name of the animal
   speakAnimal(correctAnimal);
 }
 
-// speakAnimal(name)
-//
-// Uses ResponsiveVoice to say the specified text backwards!
 function speakAnimal(name) {
-  // We create a reverse version of the name by:
-  // 1. using .split('') to split the string into an array with each character
-  // as a separate element.
-  // e.g. "bat" -> ['b','a','t']
-  // 2. using .reverse() on the resulting array to create a reverse version
-  // e.g. ['b','a','t'] -> ['t','a','b']
-  // 3. using .join('') on the resulting array to create a string version of the array
-  // with each element forming the string (joined together with nothing in between)
-  // e.g. ['t','a','b'] -> "tab"
-  // (We do this all in one line using "chaining" because .split() returns an array for
-  // for .reverse() to work on, and .reverse() returns an array for .join() to work on.)
+
   let reverseAnimal = name.split('').reverse().join('');
 
-  // Set some random numbers for the voice's pitch and rate parameters for a bit of fun
   let options = {
     pitch: Math.random(),
     rate: Math.random()
   };
-
-  // Use ResponsiveVoice to speak the string we generated, with UK English Male voice
-  // and the options we just specified.
   responsiveVoice.speak(reverseAnimal,'UK English Male',options);
 }
 
-// addButton(label)
-//
-// Creates a button using jQuery UI on a div with the label specified
-// and adds it to the page.
 function addButton(label) {
-  // Create a div with jQuery using HTML
   let $button = $('<div class="guess"></div>');
-  // Set the text in the div to our label
   $button.text(label);
-  // Turn the div into a button using jQuery UI's .button() method
   $button.button();
-  // Listen for a click on the button which means the user has guessed
   $button.on('click',function () {
-    // If the button they clicked on has a label matching the correct answer...
     if ($(this).text() === correctAnimal) {
-      // Remove all the buttons
       $('.guess').remove();
-      // Start a new round
+      score++;
+      $('#score').text(score);
       setTimeout(newRound,1000);
     }
     else {
-      // Otherwise they were wrong, so shake the button
       $(this).effect('shake');
-      // And say the correct animal again to "help" them
       speakAnimal(correctAnimal);
+      score = 0;
+      $('#score').text(score);
     }
   });
 
-  // Finally, add the button to the page so we can see it
   $('body').append($button);
+}
+
+if (annyang) {
+  var commands = {
+    'I give up': function() {
+      $('.guess').each(function(){
+        if($(this).text() === correctAnimal){
+          $(this).effect('shake');
+        }
+      });
+
+      setTimeout(function(){
+        $('.guess').remove();
+        score = 0;
+        $('#score').text(score);
+        setTimeout(newRound,1500);
+      },1000);
+    },
+    'Say it again': function() {
+      speakAnimal(correctAnimal);
+    },
+    "I think it's *tag": function(tag){
+      if(tag === correctAnimal){
+        score++;
+        $('#score').text(score);
+        $('.guess').remove();
+        setTimeout(newRound,1000);
+      } else {
+        if (voiceTries === 0){
+          responsiveVoice.speak("I probably misunderstood. Either say it again or click on the answer with your mouse",'UK English Male');
+          voiceTries++;
+        } else if (voiceTries === 1){
+          responsiveVoice.speak("I didn't understand. Click on the answer with your mouse or you might loose your score",'UK English Male');
+          voiceTries++;
+        } else if (voiceTries === 2){
+          responsiveVoice.speak("Incorrect",'UK English Male');
+          setTimeout(function(){
+            $('.guess').remove();
+            score = 0;
+            $('#score').text(score);
+            setTimeout(newRound,1500);
+          },1000);
+        }
+        // $('.guess').each(function(){
+        //   if($(this).text() === correctAnimal){
+        //     $(this).effect('shake');
+        //   }
+        // });
+
+      }
+    }
+
+  };
+
+  annyang.addCommands(commands);
+  annyang.start();
 }
