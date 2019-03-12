@@ -6,3 +6,12 @@ This is the style file for this project.
 body{
   background-color: #aaa;
 }
+
+#description{
+  position:fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  color: yellow;
+  font-size: 2em;
+}

@@ -90,7 +90,11 @@ function getWikiSearch(query){
     let description = data[2][randomIndex];
 
     displayRandomSearch(titleWeb, description);
-    getWikiArticle(titleWeb);
+
+    setTimeout(function(){
+      getWikiArticle(titleWeb);
+    }, 5000);
+    //getWikiArticle(titleWeb);
   });
 }
 
@@ -122,6 +126,7 @@ function getWikiArticle(query){
 }
 
 function displayRandomSearch(title, description){
+  $('#description').empty();
   $( "<h4>" + title + "</h4>" ).appendTo( "#description");
   $( "<p>" + description + "</p>" ).appendTo( "#description");
 }
