@@ -6,57 +6,28 @@ Author Name
 This is a template. You must fill in the title,
 author, and this description to match your project!
 
+Manipulations with wikipedia API were learned from this tutorial:
+https://www.youtube.com/watch?v=RPz75gcHj18
+
+
+
 ******************/
-
-
-// {
-//  "error": {
-//   "errors": [
-//    {
-//     "domain": "global",
-//     "reason": "required",
-//     "message": "Required parameter: q",
-//     "locationType": "parameter",
-//     "location": "q"
-//    }
-//   ],
-//   "code": 400,
-//   "message": "Required parameter: q"
-//  }
-// }
-
-// let yourUrl = "https://openclipart.org/developers/search/json/?query=play"
-//
-// function Get(yourUrl){
-//     var Httpreq = new XMLHttpRequest(); // a new request
-//     Httpreq.open("GET",yourUrl,false);
-//     Httpreq.send(null);
-//     return Httpreq.responseText;
-// }
-//
-// var json_obj = JSON.parse(Get(yourUrl));
-// console.log("Result: "+json_obj);
-
-// $.getJSON(
-//     'https://openclipart.org/developers/search/json/?query=play',
-//     function(data) {
-//       console.log(data)
-//     }
-// );
-
 
 //Source: https://stackoverflow.com/questions/20241408/parse-openclipart-api-json-to-html
 let mostDwnld;
 let mostDwnldIndex;
 let query;
+let counter;
 
 
 function fancyFunction() {
     mostDwnld = 0;
     mostDwnldIndex = 0;
+    counter = 0;
 
     query = $('#caracterTxt').val();
-    getImages(query)
+    getWikiSearch(query);
+    //getImages(query);
 
     // var api = "http://openclipart.org/search/json/?";
     // $.getJSON( api, {
@@ -103,6 +74,56 @@ function fancyFunction() {
     //       findSynonym();
     //     }
     // });
+}
+
+function getWikiSearch(query){
+  let api = 'http://en.wikipedia.org/w/api.php?action=opensearch&format=json&origin=*&search=';
+
+  let url = api + query;
+  $.getJSON(url, function(data){
+    console.log(data);
+    let resultNb = data[1].length;
+    let randomIndex = Math.floor(Math.random()*data[1].length);
+
+    let title = data[1][randomIndex];
+    let titleWeb = title.replace(/\s+/g, '_');
+    let description = data[2][randomIndex];
+
+    displayRandomSearch(titleWeb, description);
+    getWikiArticle(titleWeb);
+  });
+}
+
+function getWikiArticle(query){
+  //let api = 'http://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=Craig%20Noone&format=jsonfm';
+  let api = 'http://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&origin=*&titles=';
+  let url = api + query;
+  $.getJSON(url, function(data){
+    console.log(data);
+
+    let pageId = Object.keys(data.query.pages)[0];
+    let content = data.query.pages[pageId].revisions[0]['*'];
+    //$( "<p>" + content + "</p>" ).appendTo( "#description");
+    let wordRegex = /\b\w{4,}\b/g;
+    let words = content.match(wordRegex);
+    let word = words[Math.floor(Math.random()*words.length)];
+
+    console.log(words);
+    console.log(word);
+
+    if(counter < 10){
+      getWikiSearch(word);
+      counter++;
+    }
+
+
+  });
+
+}
+
+function displayRandomSearch(title, description){
+  $( "<h4>" + title + "</h4>" ).appendTo( "#description");
+  $( "<p>" + description + "</p>" ).appendTo( "#description");
 }
 
 function findSynonym(){
