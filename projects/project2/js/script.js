@@ -61,28 +61,41 @@ function fancyFunction() {
     $.getJSON( api, {
         query: query,
         // page: "1",
-        // amount: "20"
-        amount: "1"
-    }).done(function( data ) {
+        amount: "30"
+    }, function( data ) {
         console.log(data);
         if(data.payload.length === 0){
           console.log('empty');
         } else{
+
+          let arrayLength = data.payload.length;
+          let index = 0;
+
+          let interval = setInterval(function(){
+            if(index < arrayLength){
+              $( "<img>" ).attr( "src", data.payload[index].svg.png_thumb ).appendTo( "#images");
+              index++;
+            } else {
+              clearInterval(interval);
+            }
+          }, 1000);
+
+
           // $.each( data.payload, function( i, item ) {
           //
-          //     $( "<img>" ).attr( "src", item.svg.png_thumb ).appendTo( "#images");
+          //     setTimeout(function(){
+          //         $( "<img>" ).attr( "src", item.svg.png_thumb ).appendTo( "#images");
+          //     }, 3000);
           //
-          //     if(item.total_favorites > mostDwnld){
-          //       console.log(item.total_favorites + ">" + mostDwnld)
-          //       mostDwnld = item.total_favorites;
-          //       mostDwnldIndex = i;
-          //     }
-          //     // if ( i === 3 ) {
-          //     //     return false;
+          //
+          //     // if(item.total_favorites > mostDwnld){
+          //     //   console.log(item.total_favorites + ">" + mostDwnld)
+          //     //   mostDwnld = item.total_favorites;
+          //     //   mostDwnldIndex = i;
           //     // }
           // });
           // $( "<img>" ).attr( "src", data.payload[mostDwnldIndex].svg.png_thumb ).appendTo( "#images");
-          $( "<img>" ).attr( "src", data.payload[0].svg.png_thumb ).appendTo( "#images");
+          //$( "<img>" ).attr( "src", data.payload[0].svg.png_thumb ).appendTo( "#images");
           findSynonym();
         }
     });
@@ -112,5 +125,3 @@ function findSynonym(){
   //     // }
   // });
 }
-
-//fancyFunction();
