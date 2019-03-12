@@ -14,4 +14,15 @@ body{
   text-align: center;
   color: yellow;
   font-size: 2em;
+
+}
+
+#description span{
+  -webkit-transition: color 0.5s; /* Safari */
+  transition: color 0.5s;
+}
+
+
+.selected{
+  color: blue;
 }

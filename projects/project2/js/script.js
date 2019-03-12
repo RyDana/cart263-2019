@@ -93,7 +93,7 @@ function getWikiSearch(query){
 
     setTimeout(function(){
       getWikiArticle(titleWeb);
-    }, 5000);
+    }, 10000);
     //getWikiArticle(titleWeb);
   });
 }
@@ -128,7 +128,17 @@ function getWikiArticle(query){
 function displayRandomSearch(title, description){
   $('#description').empty();
   $( "<h4>" + title + "</h4>" ).appendTo( "#description");
-  $( "<p>" + description + "</p>" ).appendTo( "#description");
+
+  var numCharacters = description.length;
+
+  var spansDescription = "";
+  for (i = 0; i < numCharacters; i++) {
+      var spansDescription = spansDescription + "<span>" + description[i] + "</span>";
+  }
+
+  $( "<div id='innerDescription'>" + spansDescription + "</div>" ).appendTo( "#description");
+  console.log(spansDescription);
+  textAnimation(numCharacters);
 }
 
 function findSynonym(){
@@ -173,9 +183,28 @@ function getImages(query){
 }
 
 function getRandomTag(element){
-
   let chosenTagIndex = Math.floor(Math.random()*element.tags_array.length);
-
   return element.tags_array[chosenTagIndex];
+}
+
+function textAnimation(numCharacters){
+  let theText = $('#innerDescription');
+  let counter = 0;
+
+  //$("span").removeClass("selected");
+  let nextSpan = $('#innerDescription span').first();
+
+  nextSpan.addClass("selected");
+
+  let interval = setInterval(function(){
+    if(counter < numCharacters-1){
+      nextSpan = nextSpan.next();
+      nextSpan.addClass("selected");
+      counter++;
+    } else{
+      clearInterval(interval);
+    }
+
+  }, 50);
 
 }
