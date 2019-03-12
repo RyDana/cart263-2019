@@ -18,12 +18,29 @@ let mostDwnld;
 let mostDwnldIndex;
 let query;
 let counter;
+let firstSentence;
+
+let introToSentence = [
+  'But then, ',
+  'The next day, ',
+  'What happened next was that ',
+  'A week later, ',
+  'A few years later, ',
+  'That night, ',
+  'By everyone\'s surprise, ',
+  'You could\'ve guessed what happened after. ',
+  'During the day, ',
+  'Right after that, ',
+  'Because of this, '
+];
 
 
 function fancyFunction() {
     mostDwnld = 0;
     mostDwnldIndex = 0;
     counter = 0;
+
+    firstSentence = true;
 
     query = $('#caracterTxt').val();
     getWikiSearch(query);
@@ -83,23 +100,35 @@ function getWikiSearch(query){
   $.getJSON(url, function(data){
     console.log(data);
     let resultNb = data[1].length;
+    if(resultNb === 0){
+       getWikiSearch($('#caracterTxt').val());
+    }
     let randomIndex = Math.floor(Math.random()*data[1].length);
 
     let title = data[1][randomIndex];
     let titleWeb = title.replace(/\s+/g, '_');
     let description = data[2][randomIndex];
 
-    displayRandomSearch(titleWeb, description);
+    displayRandomSearch(title, description);
 
-    setTimeout(function(){
-      getWikiArticle(titleWeb);
-    }, 10000);
-    //getWikiArticle(titleWeb);
+    // setTimeout(function(){
+    //   getWikiArticle(titleWeb);
+    // }, 10000);
+
+
+    let interval = setInterval(function(){
+      if(responsiveVoice.isPlaying()) {
+        console.log("I hope you are listening");
+      } else {
+        clearInterval(interval);
+        getWikiArticle(titleWeb);
+      }
+    }, 2000);
+
   });
 }
 
 function getWikiArticle(query){
-  //let api = 'http://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=Craig%20Noone&format=jsonfm';
   let api = 'http://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&origin=*&titles=';
   let url = api + query;
   $.getJSON(url, function(data){
@@ -108,9 +137,12 @@ function getWikiArticle(query){
     let pageId = Object.keys(data.query.pages)[0];
     let content = data.query.pages[pageId].revisions[0]['*'];
     //$( "<p>" + content + "</p>" ).appendTo( "#description");
-    let wordRegex = /\b\w{4,}\b/g;
+    //let wordRegex = /\b\w{4,}\b/g;
+    let wordRegex = /\[\[[A-Za-z0-9_\- ]+/g;
     let words = content.match(wordRegex);
-    let word = words[Math.floor(Math.random()*words.length)];
+    let unfilteredWord = words[Math.floor(Math.random()*words.length)];
+    let word = unfilteredWord.substring(2, unfilteredWord.length);
+
 
     console.log(words);
     console.log(word);
@@ -127,7 +159,19 @@ function getWikiArticle(query){
 
 function displayRandomSearch(title, description){
   $('#description').empty();
-  $( "<h4>" + title + "</h4>" ).appendTo( "#description");
+  //$( "<h4>" + title + "</h4>" ).appendTo( "#description");
+
+  if(description.length === 0){
+    description = title;
+  }
+  if(firstSentence){
+    description = "Once upon a time, " + description;
+    firstSentence = false;
+  } else {
+    description = introToSentence[Math.floor(Math.random()*introToSentence.length)] + description;
+  }
+
+  responsiveVoice.speak(description, "UK English Male");
 
   var numCharacters = description.length;
 
