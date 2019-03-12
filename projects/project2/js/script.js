@@ -56,49 +56,53 @@ function fancyFunction() {
     mostDwnldIndex = 0;
 
     query = $('#caracterTxt').val();
+    getImages(query)
 
-    var api = "http://openclipart.org/search/json/?";
-    $.getJSON( api, {
-        query: query,
-        // page: "1",
-        amount: "30"
-    }, function( data ) {
-        console.log(data);
-        if(data.payload.length === 0){
-          console.log('empty');
-        } else{
-
-          let arrayLength = data.payload.length;
-          let index = 0;
-
-          let interval = setInterval(function(){
-            if(index < arrayLength){
-              $( "<img>" ).attr( "src", data.payload[index].svg.png_thumb ).appendTo( "#images");
-              index++;
-            } else {
-              clearInterval(interval);
-            }
-          }, 1000);
-
-
-          // $.each( data.payload, function( i, item ) {
-          //
-          //     setTimeout(function(){
-          //         $( "<img>" ).attr( "src", item.svg.png_thumb ).appendTo( "#images");
-          //     }, 3000);
-          //
-          //
-          //     // if(item.total_favorites > mostDwnld){
-          //     //   console.log(item.total_favorites + ">" + mostDwnld)
-          //     //   mostDwnld = item.total_favorites;
-          //     //   mostDwnldIndex = i;
-          //     // }
-          // });
-          // $( "<img>" ).attr( "src", data.payload[mostDwnldIndex].svg.png_thumb ).appendTo( "#images");
-          //$( "<img>" ).attr( "src", data.payload[0].svg.png_thumb ).appendTo( "#images");
-          findSynonym();
-        }
-    });
+    // var api = "http://openclipart.org/search/json/?";
+    // $.getJSON( api, {
+    //     query: query,
+    //     // page: "1",
+    //     amount: "10"
+    // }, function( data ) {
+    //     console.log(data);
+    //     if(data.payload.length === 0){
+    //       console.log('empty');
+    //     } else{
+    //
+    //       let arrayLength = data.payload.length;
+    //       let index = 0;
+    //       let chosenIndex = Math.floor(Math.random()*data.payload.length);
+    //
+    //       console.log(getRandomTag(data.payload[chosenIndex]));
+    //
+    //       let interval = setInterval(function(){
+    //         if(index < arrayLength){
+    //           $( "<img>" ).attr( "src", data.payload[index].svg.png_thumb ).appendTo( "#images");
+    //           index++;
+    //         } else {
+    //           clearInterval(interval);
+    //         }
+    //       }, 500);
+    //
+    //
+    //       // $.each( data.payload, function( i, item ) {
+    //       //
+    //       //     setTimeout(function(){
+    //       //         $( "<img>" ).attr( "src", item.svg.png_thumb ).appendTo( "#images");
+    //       //     }, 3000);
+    //       //
+    //       //
+    //       //     // if(item.total_favorites > mostDwnld){
+    //       //     //   console.log(item.total_favorites + ">" + mostDwnld)
+    //       //     //   mostDwnld = item.total_favorites;
+    //       //     //   mostDwnldIndex = i;
+    //       //     // }
+    //       // });
+    //       // $( "<img>" ).attr( "src", data.payload[mostDwnldIndex].svg.png_thumb ).appendTo( "#images");
+    //       //$( "<img>" ).attr( "src", data.payload[0].svg.png_thumb ).appendTo( "#images");
+    //       findSynonym();
+    //     }
+    // });
 }
 
 function findSynonym(){
@@ -109,19 +113,43 @@ function findSynonym(){
   $.getJSON(url, function(data) {
       console.log('data returned', data);
   });
+}
 
+function getImages(query){
+  var api = "http://openclipart.org/search/json/?";
+  $.getJSON( api, {
+      query: query,
+      // page: "1",
+      amount: "10"
+  }, function( data ) {
+      console.log(data);
+      if(data.payload.length === 0){
+        console.log('empty');
+      } else{
 
+        let arrayLength = data.payload.length;
+        let index = 0;
+        let chosenIndex = Math.floor(Math.random()*data.payload.length);
+        let randomTag = getRandomTag(data.payload[chosenIndex]);
+        console.log(randomTag);
 
-  // $.getJSON( api, {
-  //     query: query
-  //     // page: "1",
-  //     // amount: "20"
-  // }).done(function( data ) {
-  //     console.log(data);
-  //     // if(data.payload.length === 0){
-  //     //   console.log('empty');
-  //     // } else{
-  //     //   $( "<img>" ).attr( "src", data.payload[0].svg.png_thumb ).appendTo( "#images");
-  //     // }
-  // });
+        let interval = setInterval(function(){
+          if(index < arrayLength){
+            $( "<img>" ).attr( "src", data.payload[index].svg.png_thumb ).appendTo( "#images");
+            index++;
+          } else {
+            clearInterval(interval);
+            getImages(randomTag)
+          }
+        }, 500);
+      }
+  });
+}
+
+function getRandomTag(element){
+
+  let chosenTagIndex = Math.floor(Math.random()*element.tags_array.length);
+
+  return element.tags_array[chosenTagIndex];
+
 }
