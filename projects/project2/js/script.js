@@ -17,6 +17,9 @@ let ogQuery;
 let counter;
 let firstSentence;
 let imageDisplayInterval;
+let micInputInterval;
+let mic;
+let MIN_READING_VOLUME = 0.002;
 
 let introToSentence = [
   'But then, ',
@@ -34,6 +37,9 @@ let introToSentence = [
 
 $(document).ready(function(){
   $('#title').show();
+
+  // Create an Audio input
+  mic = new p5.AudioIn();
 
   $('#titleButton').on('click', function(){
     $('#title').hide();
@@ -74,6 +80,23 @@ function startStory() {
     //query = $('#caracterTxt').val();
     getWikiSearch(ogQuery);
     getImagesPix(ogQuery);
+
+    // start the Audio Input.
+    // By default, it does not .connect() (to the computer speakers)
+    mic.start();
+
+    let $readModal = $('#read');
+
+    micInputInterval = setInterval(function(){
+      // Get the overall volume (between 0 and 1.0)
+      let vol = mic.getLevel();
+      console.log(vol);
+      if (vol < MIN_READING_VOLUME && $readModal.css("display") === 'none'){
+        $readModal.css("display", 'block');
+      }else if( vol >= MIN_READING_VOLUME && $readModal.css("display") === 'block'){
+        $readModal.css("display", 'none');
+      }
+    }, 1000);
 
 }
 
@@ -134,7 +157,14 @@ function getWikiArticle(query){
       getImagesPix(word);
       counter++;
     } else{
-      displayRandomSearch("", "")
+      displayRandomSearch("", "");
+      clearInterval(micInputInterval);
+      mic.stop();
+      let $readModal = $('#read');
+      if( $readModal.css("display") === 'block'){
+        $readModal.css("display", 'none');
+      }
+      $('#done').show();
     }
 
 

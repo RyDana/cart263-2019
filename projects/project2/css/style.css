@@ -73,7 +73,7 @@ body{
   overflow: hidden;
 }
 
-#title, #query {
+#title, #query, #read, #done {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 4; /* Sit on top */
@@ -139,4 +139,24 @@ body{
   border-radius: 100px;
   font-size: 2em;
   border: thick solid #36B044;
+}
+
+#readContent{
+  background-color: #E4572E;
+  color: white;
+  font-size: 3em;
+  border-radius: 100px;
+  margin: 10% 20%;
+  padding: 30px;
+  border: thick solid #D0502A;
+}
+
+#doneContent{
+  background-color: #F3A712;
+  color: white;
+  font-size: 1.5em;
+  border-radius: 100px;
+  margin: 10% 20%;
+  padding: 10px;
+  border: thick solid #F4AF27;
 }
