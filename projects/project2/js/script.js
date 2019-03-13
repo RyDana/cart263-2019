@@ -149,8 +149,15 @@ function getImagesPix(query){
         imageDisplayInterval = setInterval(function(){
           if(index < arrayLength && responsiveVoice.isPlaying()){
             // position sensitive to size and document's width
-            var posx = (Math.random() * ($('#images').width())).toFixed();
-            var posy = (Math.random() * ($('#images').height())).toFixed();
+            // var posx = (Math.random() * ($('#images').width())).toFixed();
+            // var posy = (Math.random() * ($('#images').height())).toFixed();
+
+            var posx = $('#images').width()/2;
+            var posy = $('#images').height()/2;
+
+            var posxFinal = (Math.random() * ($('#images').width())).toFixed();
+            var posyFinal = (Math.random() * ($('#images').height())).toFixed();
+
 
             $( "<img>" )
               .attr( "src", data.hits[index].previewURL)
@@ -161,6 +168,10 @@ function getImagesPix(query){
               })
               .appendTo( "#images")
               .fadeIn(100)
+              .animate({
+                left: ''+posxFinal,
+                top: ''+posyFinal
+              }, 2000, "easeInOutBack")
               .delay(2000)
               .fadeOut(500, function(){
                   $(this).remove();
