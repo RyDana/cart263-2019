@@ -3,24 +3,49 @@
 This is the style file for this project.
 
 **********************************************/
+@import url('https://fonts.googleapis.com/css?family=Lilita+One|Sniglet');
+
 html {
     height: 100%;
+    text-align: center;
 }
 
 body {
     height: 100%;
+    margin: 0px;
+    overflow: hidden;
+    font-family: 'Lilita One', cursive;
 }
 
 body{
-  background-color: #aaa;
+  background-color: #61B8CC;
+}
+
+#grass{
+  position:fixed;
+  z-index: -1;
+  bottom: 0;
+  left:-10;
+  width: 100%;
+  height: 20%;
+  background-color: #3BC14A;
+  border-top: thick solid #36B044;
+}
+
+#treeImg{
+  position:fixed;
+  z-index: -1;
+  bottom: 10%;
+  left: 60%
 }
 
 #description{
+  font-family: 'Sniglet', cursive;
   position:fixed;
   bottom: 0;
-  width: 100%;
-  text-align: center;
-  color: yellow;
+  width: 80%;
+  margin: auto;
+  color: #F3A712;
   font-size: 2em;
 
 }
@@ -32,13 +57,86 @@ body{
 
 
 .selected{
-  color: blue;
+  color: #29335C;
 }
 
 #images {
+  z-index: 1;
   width: 80%;
   height: 80%;
-  background-color: lightblue;
+  border-radius: 800px;
+  background-color: rgba(255,266,266,0.4);
+  -moz-box-shadow: 0 0 30px 30px rgba(255,266,266,0.4);
+  -webkit-box-shadow: 0 0 30px 30px rgba(255,266,266,0.4);
+  box-shadow: 0 0 30px 30px rgba(255,266,266,0.4);
   margin:auto;
   overflow: hidden;
+}
+
+#title, #query {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 4; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: hidden; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+#titleContent{
+  background-color: #E4572E;
+  color: white;
+  font-size: 3em;
+  border-radius: 100px;
+  margin: 10% 20%;
+  padding: 30px;
+  border: thick solid #D0502A;
+}
+
+
+#titleButton{
+  background-color: #3BC14A;
+  width: 300px;
+  height: auto;
+  border-radius: 100px;
+  padding: 3px;
+  margin: auto;
+  font-size: 1em;
+  border: thick solid #36B044;
+}
+
+
+#queryContent{
+  background-color: #F3A712;
+  color: white;
+  font-size: 1.5em;
+  border-radius: 100px;
+  margin: 10% 20%;
+  padding: 10px;
+  border: thick solid #F4AF27;
+}
+
+
+#queryBox{
+  background-color: white;
+  color:black;
+  width: 300px;
+  height: auto;
+  border-radius: 100px;
+  padding: 3px;
+  margin: auto;
+  font-size: 1em;
+}
+
+#confirmedDiv{
+  visibility: hidden;
+  background-color: #3BC14A;
+  width: 300px;
+  margin: auto;
+  border-radius: 100px;
+  font-size: 2em;
+  border: thick solid #36B044;
 }

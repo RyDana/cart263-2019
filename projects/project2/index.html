@@ -20,18 +20,41 @@
 
     <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+
     <!-- My script(s) -->
     <script src="js/script.js"></script>
   </head>
 
   <body>
     <!-- HTML would go here if needed. -->
-    <div class="">
-      your caracter: <input type="text" name="caracter" id='caracterTxt'><br>
-      <button type="button" name="button" onClick='fancyFunction()'>Sumbit</button>
 
+    <div id="title">
+      <div id="titleContent">
+        <h1>STORYTIME</h1>
+        <div id="titleButton">
+          <p>Play!</p>
+        </div>
+      </div>
     </div>
+
+    <div id="query">
+      <div id="queryContent">
+        <h1>What one thing do you want to hear a story about?</h1>
+        <p>Say: "Tell me about ..."</p>
+        <div id="queryBox">
+          <p>|</p>
+        </div>
+        <div id="confirmedDiv">
+          <p>Ok!</p>
+        </div>
+      </div>
+    </div>
+
+
     <div id="images"></div>
+    <div id="grass"></div>
+    <img src="https://cdn.pixabay.com/photo/2017/01/31/22/47/nature-2027899_960_720.png" alt="tree" id='treeImg'>
 
     <div id="description"></div>
 

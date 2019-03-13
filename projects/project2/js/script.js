@@ -13,7 +13,7 @@ https://www.youtube.com/watch?v=RPz75gcHj18
 
 ******************/
 
-let query;
+let ogQuery;
 let counter;
 let firstSentence;
 let imageDisplayInterval;
@@ -32,16 +32,48 @@ let introToSentence = [
   'Because of this, '
 ];
 
+$(document).ready(function(){
+  $('#title').show();
 
-function fancyFunction() {
+  $('#titleButton').on('click', function(){
+    $('#title').hide();
+    $('#query').show();
+
+    annyang.start();
+  })
+});
+
+if (annyang) {
+  var commands = {
+    "Tell me about *tag": function(tag){
+      $('#queryBox p').text(tag);
+
+      let tagRegex = /[A-Za-z_\- ]{3,}/g
+      if(tag.match(tagRegex)){
+        $('#confirmedDiv').css("visibility", "visible");
+
+        setTimeout(function(){
+          annyang.abort();
+          $('#query').hide();
+          ogQuery = tag;
+
+          startStory();
+        }, 700);
+      }
+    }
+  };
+
+  annyang.addCommands(commands);
+  //annyang.start();
+}
+
+function startStory() {
     counter = 0;
     firstSentence = true;
 
-    query = $('#caracterTxt').val();
-    getWikiSearch(query);
-    getImagesPix(query);
-
-
+    //query = $('#caracterTxt').val();
+    getWikiSearch(ogQuery);
+    getImagesPix(ogQuery);
 
 }
 
@@ -53,7 +85,7 @@ function getWikiSearch(query){
     console.log(data);
     let resultNb = data[1].length;
     if(resultNb === 0){
-       getWikiSearch($('#caracterTxt').val());
+       getWikiSearch(ogQuery);
     }
     let randomIndex = Math.floor(Math.random()*data[1].length);
 
@@ -67,6 +99,9 @@ function getWikiSearch(query){
     let interval = setInterval(function(){
       if(!responsiveVoice.isPlaying()) {
         getWikiArticle(titleWeb);
+        if(imageDisplayInterval){
+          clearInterval(imageDisplayInterval);
+        }
         clearInterval(interval);
       }
     }, 2000);
@@ -81,7 +116,7 @@ function getWikiArticle(query){
     console.log(data);
     let pageId = Object.keys(data.query.pages)[0];
     if(pageId === -1){
-       getWikiArticle($('#caracterTxt').val());
+       getWikiArticle(ogQuery);
     }
     let content = data.query.pages[pageId].revisions[0]['*'];
     //$( "<p>" + content + "</p>" ).appendTo( "#description");
@@ -98,6 +133,8 @@ function getWikiArticle(query){
       getWikiSearch(word);
       getImagesPix(word);
       counter++;
+    } else{
+      displayRandomSearch("", "")
     }
 
 
@@ -116,7 +153,11 @@ function displayRandomSearch(title, description){
     description = "Once upon a time, " + description;
     firstSentence = false;
   } else {
-    description = introToSentence[Math.floor(Math.random()*introToSentence.length)] + description;
+    if(description.length === 0){
+      description = "The End."
+    } else{
+      description = introToSentence[Math.floor(Math.random()*introToSentence.length)] + description;
+    }
   }
 
   responsiveVoice.speak(description, "UK English Male", {rate: 1.3});
@@ -140,23 +181,23 @@ function getImagesPix(query){
       let arrayLength = data.hits.length;
       console.log(data);
       if(arrayLength === 0){
-        console.log('empty');
+        getImagesPix(ogQuery);
       } else{
 
 
         let index = 0;
 
         imageDisplayInterval = setInterval(function(){
-          if(index < arrayLength && responsiveVoice.isPlaying()){
+          if(index < arrayLength){
             // position sensitive to size and document's width
             // var posx = (Math.random() * ($('#images').width())).toFixed();
             // var posy = (Math.random() * ($('#images').height())).toFixed();
 
-            var posx = $('#images').width()/2;
-            var posy = $('#images').height()/2;
+            var posx = $('#images').width();
+            var posy = $('#images').height();
 
-            var posxFinal = (Math.random() * ($('#images').width())).toFixed();
-            var posyFinal = (Math.random() * ($('#images').height())).toFixed();
+            var posxFinal = (Math.random() * ($('#images').width()))+100;
+            var posyFinal = (Math.random() * ($('#images').height()/2)).toFixed();
 
 
             $( "<img>" )
@@ -171,7 +212,7 @@ function getImagesPix(query){
               .animate({
                 left: ''+posxFinal,
                 top: ''+posyFinal
-              }, 2000, "easeInOutBack")
+              }, 2000, "easeOutBack")
               .delay(2000)
               .fadeOut(500, function(){
                   $(this).remove();
