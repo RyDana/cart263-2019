@@ -13,12 +13,10 @@ https://www.youtube.com/watch?v=RPz75gcHj18
 
 ******************/
 
-//Source: https://stackoverflow.com/questions/20241408/parse-openclipart-api-json-to-html
-let mostDwnld;
-let mostDwnldIndex;
 let query;
 let counter;
 let firstSentence;
+let imageDisplayInterval;
 
 let introToSentence = [
   'But then, ',
@@ -36,61 +34,15 @@ let introToSentence = [
 
 
 function fancyFunction() {
-    mostDwnld = 0;
-    mostDwnldIndex = 0;
     counter = 0;
-
     firstSentence = true;
 
     query = $('#caracterTxt').val();
     getWikiSearch(query);
-    //getImages(query);
+    getImagesPix(query);
 
-    // var api = "http://openclipart.org/search/json/?";
-    // $.getJSON( api, {
-    //     query: query,
-    //     // page: "1",
-    //     amount: "10"
-    // }, function( data ) {
-    //     console.log(data);
-    //     if(data.payload.length === 0){
-    //       console.log('empty');
-    //     } else{
-    //
-    //       let arrayLength = data.payload.length;
-    //       let index = 0;
-    //       let chosenIndex = Math.floor(Math.random()*data.payload.length);
-    //
-    //       console.log(getRandomTag(data.payload[chosenIndex]));
-    //
-    //       let interval = setInterval(function(){
-    //         if(index < arrayLength){
-    //           $( "<img>" ).attr( "src", data.payload[index].svg.png_thumb ).appendTo( "#images");
-    //           index++;
-    //         } else {
-    //           clearInterval(interval);
-    //         }
-    //       }, 500);
-    //
-    //
-    //       // $.each( data.payload, function( i, item ) {
-    //       //
-    //       //     setTimeout(function(){
-    //       //         $( "<img>" ).attr( "src", item.svg.png_thumb ).appendTo( "#images");
-    //       //     }, 3000);
-    //       //
-    //       //
-    //       //     // if(item.total_favorites > mostDwnld){
-    //       //     //   console.log(item.total_favorites + ">" + mostDwnld)
-    //       //     //   mostDwnld = item.total_favorites;
-    //       //     //   mostDwnldIndex = i;
-    //       //     // }
-    //       // });
-    //       // $( "<img>" ).attr( "src", data.payload[mostDwnldIndex].svg.png_thumb ).appendTo( "#images");
-    //       //$( "<img>" ).attr( "src", data.payload[0].svg.png_thumb ).appendTo( "#images");
-    //       findSynonym();
-    //     }
-    // });
+
+
 }
 
 function getWikiSearch(query){
@@ -111,17 +63,11 @@ function getWikiSearch(query){
 
     displayRandomSearch(title, description);
 
-    // setTimeout(function(){
-    //   getWikiArticle(titleWeb);
-    // }, 10000);
-
 
     let interval = setInterval(function(){
-      if(responsiveVoice.isPlaying()) {
-        console.log("I hope you are listening");
-      } else {
-        clearInterval(interval);
+      if(!responsiveVoice.isPlaying()) {
         getWikiArticle(titleWeb);
+        clearInterval(interval);
       }
     }, 2000);
 
@@ -133,22 +79,24 @@ function getWikiArticle(query){
   let url = api + query;
   $.getJSON(url, function(data){
     console.log(data);
-
     let pageId = Object.keys(data.query.pages)[0];
+    if(pageId === -1){
+       getWikiArticle($('#caracterTxt').val());
+    }
     let content = data.query.pages[pageId].revisions[0]['*'];
     //$( "<p>" + content + "</p>" ).appendTo( "#description");
-    //let wordRegex = /\b\w{4,}\b/g;
-    let wordRegex = /\[\[[A-Za-z0-9_\- ]+/g;
+    let wordRegex = /\b\w{6,}\b/g;
+    // let wordRegex = /\[\[[A-Za-z0-9_\- ]+/g;
     let words = content.match(wordRegex);
-    let unfilteredWord = words[Math.floor(Math.random()*words.length)];
-    let word = unfilteredWord.substring(2, unfilteredWord.length);
+    // let unfilteredWord = words[Math.floor(Math.random()*words.length)];
+    // let word = unfilteredWord.substring(2, unfilteredWord.length);
+    let word = words[Math.floor(Math.random()*words.length)];
 
-
-    console.log(words);
     console.log(word);
 
     if(counter < 10){
       getWikiSearch(word);
+      getImagesPix(word);
       counter++;
     }
 
@@ -171,7 +119,7 @@ function displayRandomSearch(title, description){
     description = introToSentence[Math.floor(Math.random()*introToSentence.length)] + description;
   }
 
-  responsiveVoice.speak(description, "UK English Male");
+  responsiveVoice.speak(description, "UK English Male", {rate: 1.3});
 
   var numCharacters = description.length;
 
@@ -181,17 +129,49 @@ function displayRandomSearch(title, description){
   }
 
   $( "<div id='innerDescription'>" + spansDescription + "</div>" ).appendTo( "#description");
-  console.log(spansDescription);
   textAnimation(numCharacters);
 }
 
-function findSynonym(){
-  query = $('#caracterTxt').val();
 
-  var api = "https://api.datamuse.com/words?ml=";
-  var url = api + query;
-  $.getJSON(url, function(data) {
-      console.log('data returned', data);
+function getImagesPix(query){
+  var api = "https://pixabay.com/api/?key=11865026-7b13955d34490b0531754ed5c&q=";
+  var url = api + query + "&image_type=vector"
+  $.getJSON( url, function( data ) {
+      let arrayLength = data.hits.length;
+      console.log(data);
+      if(arrayLength === 0){
+        console.log('empty');
+      } else{
+
+
+        let index = 0;
+
+        imageDisplayInterval = setInterval(function(){
+          if(index < arrayLength && responsiveVoice.isPlaying()){
+            // position sensitive to size and document's width
+            var posx = (Math.random() * ($('#images').width())).toFixed();
+            var posy = (Math.random() * ($('#images').height())).toFixed();
+
+            $( "<img>" )
+              .attr( "src", data.hits[index].previewURL)
+              .css({
+                  'position':'absolute',
+                  'left':posx+'px',
+                  'top':posy+'px'
+              })
+              .appendTo( "#images")
+              .fadeIn(100)
+              .delay(2000)
+              .fadeOut(500, function(){
+                  $(this).remove();
+                });
+            index++;
+          } else {
+            clearInterval(imageDisplayInterval);
+            //getImages(randomTag)
+          }
+        }, 1000);
+      }
   });
 }
 
@@ -215,13 +195,29 @@ function getImages(query){
 
         let interval = setInterval(function(){
           if(index < arrayLength){
-            $( "<img>" ).attr( "src", data.payload[index].svg.png_thumb ).appendTo( "#images");
+            // position sensitive to size and document's width
+            var posx = (Math.random() * ($('#images').width())).toFixed();
+            var posy = (Math.random() * ($('#images').height())).toFixed();
+
+            $( "<img>" )
+              .attr( "src", data.payload[index].svg.png_thumb )
+              .css({
+                  'position':'absolute',
+                  'left':posx+'px',
+                  'top':posy+'px'
+              })
+              .appendTo( "#images")
+              .fadeIn(100)
+              .delay(1000)
+              .fadeOut(500, function(){
+                  $(this).remove();
+                });
             index++;
           } else {
             clearInterval(interval);
             getImages(randomTag)
           }
-        }, 500);
+        }, 1000);
       }
   });
 }

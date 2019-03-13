@@ -3,6 +3,14 @@
 This is the style file for this project.
 
 **********************************************/
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+}
+
 body{
   background-color: #aaa;
 }
@@ -25,4 +33,12 @@ body{
 
 .selected{
   color: blue;
+}
+
+#images {
+  width: 80%;
+  height: 80%;
+  background-color: lightblue;
+  margin:auto;
+  overflow: hidden;
 }
