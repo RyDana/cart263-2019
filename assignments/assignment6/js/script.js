@@ -27,7 +27,14 @@ $(document).ready(function() {
   // the location of the file, and a function to call when the data
   // is available...
   $.getJSON('data/data.json', gotData);
+
+  $('body').on('click', reloadSentence);
 });
+
+function reloadSentence(){
+  $('body').empty();
+  $.getJSON('data/data.json', gotData);
+}
 
 // gotData (data)
 //
@@ -49,16 +56,33 @@ function gotData(data) {
     verb = 'are';
   }
 
+  //cat descriptor
+  let descriptor = getRandomElement(data.descriptions);
+
+  //determiner for cat
+  let determinerCat = 'a';
+  if(vowels.indexOf(descriptor.charAt(0)) !== -1){
+    determinerCat = 'an';
+  }
+
   // Now the cat
   let cat = getRandomElement(data.cats);
+
+  let name = getRandomElement(data.firstNames);
 
   // Same again for room
   let room = getRandomElement(data.rooms);
 
+  //determiner for room
+  let determineRoom = 'a';
+  if(vowels.indexOf(room.charAt(0)) !== -1){
+    determineRoom = 'an';
+  }
+
   // Now we can construct our description with a template string
   // We have the basic structure of a sentence and we substitute in the
   // values we've just calculated
-  let description = `${condiment} ${verb} like a ${cat} in a ${room}.`;
+  let description = `${condiment} ${verb} like ${determinerCat} ${descriptor} ${cat} named ${name} in ${determineRoom} ${room}.`;
 
   // Finally, we add it to the page and hey presto!
   $('body').append(description)
