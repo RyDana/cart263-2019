@@ -216,7 +216,7 @@ function getWikiSearch(query){
 //set is as the new query for the next round and sends it back to getSearchWiki
 function getWikiArticle(query){
   //WikiMedia api, looks for one article page with the given article title, return is in JSON format
-  let api = 'http://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&origin=*&titles=';
+  let api = 'https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&origin=*&titles=';
   let url = api + query;
 
   //gets the JSON response
