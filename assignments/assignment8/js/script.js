@@ -31,47 +31,32 @@ $(document).on('keypress', function(e){
     ball.setAttribute('angularVelocity', {x: 0, y: 0, z: 0});
     ball.setAttribute('position', {x: 1, y: 2, z: -3});
     $('a-scene').append(ball);
-    $('#camera').body.getWorldRotation(rotation);
-    $('#camera').body.getWorldPosition(position);
-    console.log("position:" + position.x + " Rotation: " + rotation.x);
   }
 });
 
 
-// AFRAME.registerComponent('rotation-reader', {
-//   /**
-//    * We use IIFE (immediately-invoked function expression) to only allocate one
-//    * vector or euler and not re-create on every tick to save memory.
-//    */
-//   tick: (function () {
-//
-//     return function () {
-//       this.el.object3D.getWorldPosition(position);
-//       this.el.object3D.getWorldRotation(rotation);
-//       // position and rotation now contain vector and euler in world space.
-//     };
-//   })
-// });
+AFRAME.registerComponent('rotation-reader', {
+  /**
+   * We use IIFE (immediately-invoked function expression) to only allocate one
+   * vector or euler and not re-create on every tick to save memory.
+   */
+  tick: (function () {
 
-// let hit = false
-// let resetId = 0
-// const resetBall = () => {
-//     clearTimeout(resetId)
-//     $("#ball").body.position.set(0, 0.6,-4)
-//     $("#ball").body.velocity.set(0, 5,0)
-//     $("#ball").body.angularVelocity.set(0, 0,0)
-//     hit = false
-//     resetId = setTimeout(resetBall,6000)
-// }
-//
-// on($("#weapon"),'collide',(e)=>{
-//     const ball = $("#ball")
-//     if(e.detail.body.id === ball.body.id && !hit) {
-//         hit = true
-//         score = score + 1
-//         clearTimeout(resetId)
-//         resetId = setTimeout(resetBall,2000)
-//     }
-// })
-//
-// setTimeout(resetBall,3000)
+    return function () {
+      this.el.object3D.getWorldPosition(position);
+      this.el.object3D.getWorldRotation(rotation);
+      // position and rotation now contain vector and euler in world space.
+    };
+  })
+});
+/**
+Collision between camera and object:
+https://stackoverflow.com/questions/53119373/collision-between-camera-and-objects-in-a-frame
+
+Change appearance on mouse hover
+https://glitch.com/~aframe-school-cursor-handler/
+
+Building minecraft:
+https://aframe.io/docs/0.9.0/guides/building-a-minecraft-demo.html
+
+*/
