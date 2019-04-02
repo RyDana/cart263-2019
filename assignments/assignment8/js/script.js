@@ -9,6 +9,7 @@ This is a template. You must fill in the title,
 author, and this description to match your project!
 
 ******************/
+let score = 0;
 
 window.addEventListener('touchstart', function() {
   throwBall();
@@ -32,14 +33,14 @@ function throwBall(){
     linearDamping: 0.1
   });
   ball.setAttribute('material', {
-    color: "green"
+    color: "#eee"
   });
   ball.setAttribute('angularVelocity', {x: 0, y: 0, z: 0});
 
 
   let camera = document.querySelector('a-entity');
   let theta = camera.getAttribute('rotation').x + 270;
-  var phi = -camera.getAttribute('rotation').y + 90;
+  let phi = -camera.getAttribute('rotation').y + 90;
 
   let r = 2
   let position = positionAndVelocityCalculator(r, theta, phi);
@@ -90,6 +91,8 @@ function changeColorCollision(){
   this.removeEventListener('mouseenter',changeColorME);
   this.removeEventListener('mouseleave',changeColorML);
   this.removeEventListener('collide',changeColorCollision);
+  score++;
+    document.getElementById('score').setAttribute('text','value',score);
   let element = this;
   setTimeout(function(){
     element.setAttribute('color', '#EF2D5E');
