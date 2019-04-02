@@ -9,10 +9,9 @@ This is a template. You must fill in the title,
 author, and this description to match your project!
 
 ******************/
-let position = new THREE.Vector3();
-let rotation = new THREE.Euler();
 
-$(document).on('keypress', function(e){
+
+window.addEventListener('keypress', function(e){
   if(e.keyCode === 32){
     let ball = document.createElement('a-entity')
     ball.setAttribute('geometry', {
@@ -21,35 +20,79 @@ $(document).on('keypress', function(e){
     });
     ball.setAttribute('dynamic-body', {
       shape: 'sphere',
-      mass: 1.5,
+      mass: 5,
       linearDamping: 0.005
     });
     ball.setAttribute('material', {
       color: "green"
     });
-    ball.setAttribute('velocity', {x: 1, y: 5, y: 0});
     ball.setAttribute('angularVelocity', {x: 0, y: 0, z: 0});
-    ball.setAttribute('position', {x: 1, y: 2, z: -3});
-    $('a-scene').append(ball);
+
+
+    let camera = document.querySelector('a-entity');
+    let theta = camera.getAttribute('rotation').x + 270;
+    var phi = -camera.getAttribute('rotation').y + 90;
+
+    let r = 2
+    let position = positionAndVelocityCalculator(r, theta, phi);
+
+    let force = 10
+    let velocity = positionAndVelocityCalculator(force, theta, phi);
+
+    ball.setAttribute('position', {
+      x: position[0],
+      y: position[1] + 2,
+      z: position[2]
+    });
+
+    ball.setAttribute('velocity', {
+      x: velocity[0],
+      y: velocity[1],
+      z: velocity[2]
+    });
+
+    document.querySelector('a-scene').append(ball);
   }
 });
 
+function positionAndVelocityCalculator(multiplier, theta, phi){
+  var xx = multiplier * Math.sin(Math.PI * theta / 180) * Math.cos(Math.PI * phi / 180);
+  var zz = multiplier * Math.sin(Math.PI * theta / 180) * Math.sin(Math.PI * phi / 180);
+  var yy = multiplier * Math.cos(Math.PI * theta / 180);
 
-AFRAME.registerComponent('rotation-reader', {
-  /**
-   * We use IIFE (immediately-invoked function expression) to only allocate one
-   * vector or euler and not re-create on every tick to save memory.
-   */
-  tick: (function () {
+  return [xx, yy, zz];
+}
 
-    return function () {
-      this.el.object3D.getWorldPosition(position);
-      this.el.object3D.getWorldRotation(rotation);
-      // position and rotation now contain vector and euler in world space.
-    };
-  })
+AFRAME.registerComponent('handle-events', {
+  init: function () {
+    var el = this.el;  // <a-box>
+    el.addEventListener('mouseenter', changeColorME);
+    el.addEventListener('mouseleave', changeColorML);
+    el.addEventListener('collide', changeColorCollision);
+  }
 });
-/**
+
+function changeColorME() {
+  this.setAttribute('color', '#24CAFF');
+}
+function changeColorML() {
+  this.setAttribute('color', '#EF2D5E');
+}
+function changeColorCollision(){
+  this.setAttribute('color', '#42f465');
+  this.removeEventListener('mouseenter',changeColorME);
+  this.removeEventListener('mouseleave',changeColorML);
+  this.removeEventListener('collide',changeColorCollision);
+  let element = this;
+  setTimeout(function(){
+    element.setAttribute('color', '#EF2D5E');
+    element.addEventListener('mouseenter', changeColorME);
+    element.addEventListener('mouseleave', changeColorML);
+    element.addEventListener('collide', changeColorCollision);
+  },2000);
+}
+
+/**sources:
 Collision between camera and object:
 https://stackoverflow.com/questions/53119373/collision-between-camera-and-objects-in-a-frame
 
