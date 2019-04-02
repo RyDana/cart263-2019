@@ -10,50 +10,57 @@ author, and this description to match your project!
 
 ******************/
 
+window.addEventListener('touchstart', function() {
+  throwBall();
+});
 
 window.addEventListener('keypress', function(e){
   if(e.keyCode === 32){
-    let ball = document.createElement('a-entity')
-    ball.setAttribute('geometry', {
-      primitive: 'sphere',
-      radius: 0.5
-    });
-    ball.setAttribute('dynamic-body', {
-      shape: 'sphere',
-      mass: 5,
-      linearDamping: 0.005
-    });
-    ball.setAttribute('material', {
-      color: "green"
-    });
-    ball.setAttribute('angularVelocity', {x: 0, y: 0, z: 0});
-
-
-    let camera = document.querySelector('a-entity');
-    let theta = camera.getAttribute('rotation').x + 270;
-    var phi = -camera.getAttribute('rotation').y + 90;
-
-    let r = 2
-    let position = positionAndVelocityCalculator(r, theta, phi);
-
-    let force = 10
-    let velocity = positionAndVelocityCalculator(force, theta, phi);
-
-    ball.setAttribute('position', {
-      x: position[0],
-      y: position[1] + 2,
-      z: position[2]
-    });
-
-    ball.setAttribute('velocity', {
-      x: velocity[0],
-      y: velocity[1],
-      z: velocity[2]
-    });
-
-    document.querySelector('a-scene').append(ball);
+    throwBall();
   }
 });
+
+function throwBall(){
+  let ball = document.createElement('a-entity');
+  ball.setAttribute('geometry', {
+    primitive: 'sphere',
+    radius: 0.5
+  });
+  ball.setAttribute('dynamic-body', {
+    shape: 'sphere',
+    mass: 10,
+    linearDamping: 0.1
+  });
+  ball.setAttribute('material', {
+    color: "green"
+  });
+  ball.setAttribute('angularVelocity', {x: 0, y: 0, z: 0});
+
+
+  let camera = document.querySelector('a-entity');
+  let theta = camera.getAttribute('rotation').x + 270;
+  var phi = -camera.getAttribute('rotation').y + 90;
+
+  let r = 2
+  let position = positionAndVelocityCalculator(r, theta, phi);
+
+  let force = 8
+  let velocity = positionAndVelocityCalculator(force, theta, phi);
+
+  ball.setAttribute('position', {
+    x: position[0],
+    y: position[1] + 2,
+    z: position[2]
+  });
+
+  ball.setAttribute('velocity', {
+    x: velocity[0],
+    y: velocity[1],
+    z: velocity[2]
+  });
+
+  document.querySelector('a-scene').append(ball);
+}
 
 function positionAndVelocityCalculator(multiplier, theta, phi){
   var xx = multiplier * Math.sin(Math.PI * theta / 180) * Math.cos(Math.PI * phi / 180);
