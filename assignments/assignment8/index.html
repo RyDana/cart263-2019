@@ -21,12 +21,13 @@
 
   <body>
     <!-- <a-scene stats physics="debug:true;"> -->
-    <a-scene>
-      <a-assets>
-        <img src="https://img.gs/bbdkhfbzkk/stretch/https://i.imgur.com/25P1geh.png" id="grid" crossorigin="anonymous">
+    <a-scene fog="type: exponential; color: #047f82; density: 0.02"
+      physics='gravity:1.1; friction:2'>
+      <a-assets >
+        <img src="https://i.imgur.com/KTYARF6.jpg" id="grid" crossorigin="anonymous">
       </a-assets>
 
-      <a-entity id='camera' camera look-controls position="0 1.5 0">
+      <a-entity id='camera' camera look-controls position="0 1 0">
           <a-cursor color='#fff'>
           </a-cursor>
           <a-text id="score"
@@ -88,37 +89,44 @@
         hit='false'>
       </a-box>
 
-      <a-plane
-        rotation="-90 0 0"
-        width="100"
-        height="100"
+      <a-cylinder
+        position='0 -15 0'
+        rotation="0 0 0"
+        radius="200"
+        height="1"
+        position
         material="src: #grid;
           repeat: 100 100;
           transparent: true;
-          metalness:0.6;
-          roughness: 0.4;"
+          metalness:0.1;
+          roughness: 0.8;"
         static-body>
-      </a-plane>
+      </a-cylinder>
 
-      <a-sky color="#02163a">
+      <a-sky color="#02163a" poaition='0 -200 0'>
       </a-sky>
 
-      <!-- <a-entity light="color: #ccccff;
-          intensity: 1.5;
-          type: ambient;"
-        visible="">
-      </a-entity> -->
 
-      <!-- <a-ocean color="#9CE3F9"
-        depth="100"
-        width="100"
-        density="20"
-        opacity='0.75'
+      <a-entity light="type: ambient; color: #BBB"></a-entity>
+      <a-entity light="type: directional;
+          color: #ffff60;
+          intensity: 0.6"
+        position="-0.5 1 1">
+      </a-entity>
+
+      <a-ocean color="#1057c9"
+        amplitude='1'
+        aplitudeVariance='1.5'
+        depth="200"
+        width="200"
+        density="40"
+        opacity='0.9'
+        position="0 10 0"
         speed='4'
-        metalness='0'
-        roughness='1'
-        rotation='-90 0 0'>
-      </a-ocean> -->
+        metalness='1'
+        roughness='0.1'
+        rotation='90 0 0'>
+      </a-ocean>
 
     </a-scene>
 
