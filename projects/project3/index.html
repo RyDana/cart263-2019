@@ -10,6 +10,7 @@
     <!-- Library script(s) -->
     <script src="js/libraries/Pizzicato.js"></script>
     <script src="https://aframe.io/releases/0.9.0/aframe.min.js"></script>
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-component.min.js"></script>
     <script src="https://unpkg.com/aframe-animation-component@5.1.2/dist/aframe-animation-component.min.js"></script>
     <script src="https://unpkg.com/aframe-physics-system@1.4.0/dist/aframe-physics-system.min.js"></script>
     <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.0.0/dist/aframe-extras.min.js"></script>
@@ -25,7 +26,10 @@
       physics='gravity:1.1; friction:2'>
       <a-assets >
         <img src="https://i.imgur.com/KTYARF6.jpg" id="grid" crossorigin="anonymous">
+        <img src="assets/images/sea-gif.gif" id="sea_floor">
       </a-assets>
+
+      <!-- <a-entity geometry="primitive:box;" material="shader:gif;src:#sea_floor"></a-entity> -->
 
       <a-entity id='camera' camera look-controls position="0 1 0">
           <a-cursor color='#fff'>
@@ -89,19 +93,14 @@
         hit='false'>
       </a-box>
 
-      <a-cylinder
-        position='0 -15 0'
-        rotation="0 0 0"
-        radius="200"
-        height="1"
-        position
-        material="src: #grid;
-          repeat: 100 100;
-          transparent: true;
-          metalness:0.1;
-          roughness: 0.8;"
-        static-body>
-      </a-cylinder>
+      <a-entity geometry="primitive:cylinder;
+          radius:200;
+          height:1;"
+        position="0 -20 0"
+        material="shader:gif;
+        src:#sea_floor;
+        repeat: 30 30;">
+      </a-entity>
 
       <a-sky color="#02163a" poaition='0 -200 0'>
       </a-sky>
