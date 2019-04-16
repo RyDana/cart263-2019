@@ -22,7 +22,7 @@
 
   <body>
     <!-- <a-scene stats physics="debug:true;"> -->
-    <a-scene fog="type: exponential; color: #047f82; density: 0.02"
+    <a-scene physics="debug:true;" fog="type: exponential; color: #047f82; density: 0.02"
       physics='gravity:1.1; friction:2'>
       <a-assets >
         <img src="https://i.imgur.com/KTYARF6.jpg" id="grid" crossorigin="anonymous">
@@ -37,10 +37,6 @@
         <a-asset-item id="body-mtl" src="assets/models/shark_body.mtl"></a-asset-item>
         <a-asset-item id="tail-obj" src="assets/models/shark_tail.obj"></a-asset-item>
         <a-asset-item id="tail-mtl" src="assets/models/shark_tail.mtl"></a-asset-item>
-        <a-mixin id="body_section_head" geometry="primitive: box; depth: 1; height: 0.8; width: 1.5" material="color: #9D0B28" rotation="0 0 0" pivot="0 0 0" scale="1 1 1"></a-mixin>
-        <a-mixin id="body_section_jaw" geometry="primitive: box; depth: 1; height: 0.2; width: 1.5" material="color: #9D0B28" rotation="0 0 0" pivot="0.7 0 0" scale="1 1 1"></a-mixin>
-        <a-mixin id="body_section_body" geometry="primitive: box; depth: 1; height: 1; width: 1.5" material="color: #9D0B28" rotation="0 0 0" pivot="0 0 0" scale="1 1 1"></a-mixin>
-        <a-mixin id="body_section_tail" geometry="primitive: box; depth: 1; height: 0.8; width: 1.5" material="color: #9D0B28" rotation="0 0 0" pivot="0 0 0" scale="1 1 1"></a-mixin>
       </a-assets>
 
       <a-entity id='camera' camera look-controls wasd-controls position="0 1 0">
@@ -55,11 +51,21 @@
           </a-text>
       </a-entity>
 
-      <a-entity mixin="rotate" position="0 1 0" animation="to: 0 -360 0; dur: 80000; easing: linear">
-        <a-entity position="5 0 0" >
-          <a-entity mixin="flap" rotation="0 4 0" animation="to: 0 -4 0" pivot="0 0 1">
+      <a-entity
+        geometry="primitive:cylinder;
+          radius:1;
+          height:1;"
+        position="0 -5 -1.5"
+        material="color:white;"
+        handle-take>
+      </a-entity>
+
+      <a-entity mixin="rotate" position="0 1 0" animation="to: 0 -360 0; dur: 8000000; easing: linear">
+        <a-entity position="5 0 0">
+          <a-entity mixin="flap" rotation="0 4 0" animation="to: 0 -4 0" pivot="0 0 1" >
             <a-entity>
-              <a-entity mixin="" obj-model="obj: #head-obj; mtl: #head-mtl" static-body></a-entity>
+              <a-entity mixin="" obj-model="obj: #head-obj; mtl: #head-mtl" static-body handle-events
+              hit='false'></a-entity>
             </a-entity>
             <a-entity mixin="flap" rotation="2 0 0" animation="to: -10 0 0; dur: 3000;" pivot="0 0 1">
               <a-entity mixin="" obj-model="obj: #jaw-obj; mtl: #jaw-mtl" static-body></a-entity>
@@ -67,16 +73,16 @@
           </a-entity>
           <a-entity mixin="flap" rotation="0 -4 0" animation="to: 0 4 0" pivot="0 0 1">
             <a-entity>
-              <a-entity mixin="" obj-model="obj: #body-obj; mtl: #body-mtl" static-body></a-entity>
+              <a-entity mixin="" obj-model="obj: #body-obj; mtl: #body-mtl"></a-entity>
             </a-entity>
             <a-entity mixin="flap" rotation="0 -4 0" animation="to: 0 4 0" pivot="0 0 0">
-              <a-entity mixin="" obj-model="obj: #tail-obj; mtl: #tail-mtl" static-body></a-entity>
+              <a-entity mixin="" obj-model="obj: #tail-obj; mtl: #tail-mtl"></a-entity>
             </a-entity>
           </a-entity>
         </a-entity>
       </a-entity>
 
-      <a-entity mixin="rotate" position="0 -6 0" animation="to: 0 -360 0; dur: 9000; easing: linear">
+      <!-- <a-entity mixin="rotate" position="0 -6 0" animation="to: 0 -360 0; dur: 9000; easing: linear">
         <a-entity position="3 0 0" >
           <a-entity mixin="flap" rotation="0 4 0" animation="to: 0 -4 0" pivot="0 0 1">
             <a-entity>
@@ -137,7 +143,7 @@
             </a-entity>
           </a-entity>
         </a-entity>
-      </a-entity>
+      </a-entity> -->
 
       <!-- <a-entity mixin="rotate" position="0 1 0" animation="to: 0 -360 0; dur: 80000; easing: linear">
         <a-entity rotation="0 90 0" position="5 0 0">

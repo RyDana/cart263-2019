@@ -10,18 +10,47 @@ author, and this description to match your project!
 
 ******************/
 let score = 0;
+let overBasket = false;
+let inHand = false;
 
 window.addEventListener('touchstart', function() {
   throwBall();
 });
 
 window.addEventListener('keypress', function(e){
-  if(e.keyCode === 32){
+  console.log("inHand: " + inHand);
+  console.log("overBasket: " + overBasket);
+  if(e.keyCode === 32 && inHand){
     throwBall();
+    inHand=false;
+  } else if (e.keyCode === 32 && overBasket){
+    ballInHand();
+    inHand = true;
   }
 });
 
+function ballInHand(){
+  let ball = document.createElement('a-entity');
+  ball.setAttribute('id', 'ballInHand');
+  ball.setAttribute('geometry', {
+    primitive: 'sphere',
+    radius: 0.2
+  });
+  ball.setAttribute('material', {
+    color: "#eee"
+  });
+  ball.setAttribute('position', {
+    x: 0,
+    y: 0,
+    z: -2
+  });
+  document.querySelector('#camera').append(ball);
+}
+
 function throwBall(){
+  let ballToRemove = document.querySelector("#ballInHand");
+  ballToRemove.parentNode.removeChild(ballToRemove);
+
   let ball = document.createElement('a-entity');
   ball.setAttribute('geometry', {
     primitive: 'sphere',
@@ -71,6 +100,25 @@ function positionAndVelocityCalculator(multiplier, theta, phi){
   return [xx, yy, zz];
 }
 
+AFRAME.registerComponent('handle-take', {
+  init: function () {
+    let el = this.el;
+    el.addEventListener('mouseenter', basketME);
+    el.addEventListener('mouseleave', basketML);
+  }
+});
+
+function basketME(){
+  this.setAttribute('material', 'color:#24CAFF;');
+  overBasket=true;
+}
+
+function basketML(){
+  this.setAttribute('material', 'color:#FFF;');
+  overBasket=false;
+}
+
+
 AFRAME.registerComponent('handle-events', {
   init: function () {
     var el = this.el;  // <a-box>
@@ -92,7 +140,7 @@ function changeColorCollision(){
   this.removeEventListener('mouseleave',changeColorML);
   this.removeEventListener('collide',changeColorCollision);
   score++;
-    document.getElementById('score').setAttribute('text','value',score);
+  document.getElementById('score').setAttribute('text','value',score);
   let element = this;
   setTimeout(function(){
     element.setAttribute('color', '#EF2D5E');
