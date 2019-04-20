@@ -14,12 +14,18 @@ let overBasket = false;
 let inHand = false;
 
 window.addEventListener('touchstart', function() {
-  throwBall();
+  if(inHand){
+    throwBall();
+    inHand=false;
+  } else if (overBasket){
+    ballInHand();
+    inHand = true;
+  }
 });
 
 window.addEventListener('keypress', function(e){
-  console.log("inHand: " + inHand);
-  console.log("overBasket: " + overBasket);
+  // console.log("inHand: " + inHand);
+  // console.log("overBasket: " + overBasket);
   if(e.keyCode === 32 && inHand){
     throwBall();
     inHand=false;
@@ -52,6 +58,7 @@ function throwBall(){
   ballToRemove.parentNode.removeChild(ballToRemove);
 
   let ball = document.createElement('a-entity');
+  ball.setAttribute('id','ball');
   ball.setAttribute('geometry', {
     primitive: 'sphere',
     radius: 0.5
@@ -90,6 +97,11 @@ function throwBall(){
   });
 
   document.querySelector('a-scene').append(ball);
+  setTimeout(function(){
+    if(ball.parentNode != null){
+      ball.parentNode.removeChild(ball);
+    }
+  }, 2000);
 }
 
 function positionAndVelocityCalculator(multiplier, theta, phi){
@@ -118,6 +130,31 @@ function basketML(){
   overBasket=false;
 }
 
+AFRAME.registerComponent('handle-eat', {
+  init: function () {
+    let el = this.el;
+    el.addEventListener('collide', sharkFoodCollision);
+  }
+});
+
+function sharkFoodCollision(e){
+  let body = e.detail.body.el;
+  let shark = this;
+  if(body){
+    //console.log(body);
+    if(body.id === 'ball'){
+      shark.removeEventListener('collide',sharkFoodCollision);
+      setTimeout(function(){
+        shark.addEventListener('collide',sharkFoodCollision);
+      }, 1000);
+      setTimeout(function(){
+        body.parentNode.removeChild(body);
+      }, 200);
+      score++;
+      document.getElementById('score').setAttribute('text','value',score);
+    }
+  }
+}
 
 AFRAME.registerComponent('handle-events', {
   init: function () {

@@ -64,8 +64,7 @@
         <a-entity position="5 0 0">
           <a-entity mixin="flap" rotation="0 4 0" animation="to: 0 -4 0" pivot="0 0 1" >
             <a-entity>
-              <a-entity mixin="" obj-model="obj: #head-obj; mtl: #head-mtl" static-body handle-events
-              hit='false'></a-entity>
+              <a-entity mixin="" obj-model="obj: #head-obj; mtl: #head-mtl" static-body handle-eat></a-entity>
             </a-entity>
             <a-entity mixin="flap" rotation="2 0 0" animation="to: -10 0 0; dur: 3000;" pivot="0 0 1">
               <a-entity mixin="" obj-model="obj: #jaw-obj; mtl: #jaw-mtl" static-body></a-entity>
