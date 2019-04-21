@@ -12,6 +12,27 @@ author, and this description to match your project!
 let score = 0;
 let overBasket = false;
 let inHand = false;
+let numberOfSharks = 10;
+let sharkMaxLife = 0.5;
+let sharkLifeLoss = 0.0005;
+let gameOver = false;
+
+// document.addEventListener('DOMContentLoaded', function() {
+//   let sharkHTML = "";
+//   let i;
+//   for(i = 0; i<numberOfSharks;i++){
+//     let positionY = getRandom(-10,4);
+//     let distFromCamera = getRandom(5,25);
+//     let lapTime = getRandom(8000,30000);
+//     let initLife = getRandom(0.5,0.8);
+//     sharkHTML += "<a-entity mixin='rotate' position='0 " + positionY + " 0' animation='to: 0 -360 0; dur: "+lapTime+"; easing: linear'><a-entity position='"+distFromCamera+" 0 0'><a-entity mixin='flap' rotation='0 4 0' animation='to: 0 -4 0' pivot='0 0 1' ><a-entity><a-entity obj-model='obj: #head-obj; mtl: #head-mtl' static-body handle-eat></a-entity></a-entity><a-entity mixin='flap' rotation='2 0 0' animation='to: -10 0 0; dur: 3000;'' pivot='0 0 1'><a-entity obj-model='obj: #jaw-obj; mtl: #jaw-mtl' static-body></a-entity></a-entity><a-entity geometry='primitive:box; width:0.1; depth:"+initLife+"; height:0.1' position='0 0.5 1.5' material='color:green;' handle-life></a-entity></a-entity><a-entity mixin='flap' rotation='0 -4 0' animation='to: 0 4 0' pivot='0 0 1'><a-entity><a-entity obj-model='obj: #body-obj; mtl: #body-mtl' static-body></a-entity></a-entity><a-entity mixin='flap' rotation='0 -4 0' animation='to: 0 4 0' pivot='0 0 0'><a-entity obj-model='obj: #tail-obj; mtl: #tail-mtl' static-body></a-entity></a-entity></a-entity></a-entity></a-entity>"
+//   }
+//   document.querySelector('a-scene').innerHTML += sharkHTML;
+// });
+
+// function getRandom(min, max) {
+//   return (Math.random() * (max - min) ) + min;
+// }
 
 window.addEventListener('touchstart', function() {
   if(inHand){
@@ -134,10 +155,72 @@ function basketML(){
   overBasket=false;
 }
 
+//
+//       <a-entity mixin="rotate" position="0 1 0" animation="to: 0 -360 0; dur: 800000; easing: linear">
+//         <a-entity position="5 0 0">
+//           <a-entity mixin="flap" rotation="0 4 0" animation="to: 0 -4 0" pivot="0 0 1" >
+//             <a-entity>
+//               <a-entity mixin="" obj-model="obj: #head-obj; mtl: #head-mtl" static-body handle-eat></a-entity>
+//             </a-entity>
+//             <a-entity mixin="flap" rotation="2 0 0" animation="to: -10 0 0; dur: 3000;" pivot="0 0 1">
+//               <a-entity mixin="" obj-model="obj: #jaw-obj; mtl: #jaw-mtl" static-body></a-entity>
+//             </a-entity>
+//             <a-entity
+//               geometry="primitive:box;
+//                 width:0.1;
+//                 depth:0.5;
+//                 height:0.1"
+//               position="0 0.5 1.5"
+//               material="color:green;" handle-life>
+//             </a-entity>
+//           </a-entity>
+//           <a-entity mixin="flap" rotation="0 -4 0" animation="to: 0 4 0" pivot="0 0 1">
+//             <a-entity>
+//               <a-entity mixin="" obj-model="obj: #body-obj; mtl: #body-mtl" static-body></a-entity>
+//             </a-entity>
+//             <a-entity mixin="flap" rotation="0 -4 0" animation="to: 0 4 0" pivot="0 0 0">
+//               <a-entity mixin="" obj-model="obj: #tail-obj; mtl: #tail-mtl" static-body></a-entity>
+//             </a-entity>
+//           </a-entity>
+//         </a-entity>
+//       </a-entity>
+
+
+
 AFRAME.registerComponent('handle-eat', {
   init: function () {
     let el = this.el;
     el.addEventListener('collide', sharkFoodCollision);
+  }
+});
+
+AFRAME.registerComponent('handle-life', {
+  tick: function(){
+    let el = this.el;
+    let color = 'green';
+    if(!gameOver){
+      let life = el.getAttribute("geometry").depth;
+      life -= sharkLifeLoss;
+      console.log(life);
+      if(life < 0){
+        gameOver = true;
+      } else{
+        if(life < 0.2){
+          color = 'red'
+        } else if(life < 0.4){
+          color = 'yellow'
+        } else {
+          color = 'green'
+        }
+        el.setAttribute('geometry',{
+          primitive:'box',
+          width:0.1,
+          depth: life,
+          height:0.1
+        });
+        el.setAttribute('material',{color: color});
+      }
+    }
   }
 });
 
@@ -153,7 +236,13 @@ function sharkFoodCollision(e){
       }, 1000);
       setTimeout(function(){
         body.parentNode.removeChild(body);
-      }, 200);
+      }, 100);
+      shark.parentNode.nextElementSibling.nextElementSibling.setAttribute('geometry',{
+        primitive:'box',
+        width:0.1,
+        depth: sharkMaxLife,
+        height:0.1
+      });
       score++;
       document.getElementById('score').setAttribute('text','value',score);
       animateShark(shark);
@@ -168,6 +257,7 @@ function animateShark(shark){
   let sharkBody = sharkWholeHead.nextElementSibling;
   let sharkTail = sharkBody.lastElementChild;
   sharkWholeHead.setAttribute('animation',"to: -25 0 0; dur: 500;");
+  sharkJaw.setAttribute("rotation","2 0 0");
   sharkJaw.setAttribute("animation","to: -10 0 0; dur: 150;");
   sharkBody.setAttribute("animation", "to: -20 0 0; dur: 500;");
   sharkTail.setAttribute("animation", "to: -20 0 0; dur: 500;");
