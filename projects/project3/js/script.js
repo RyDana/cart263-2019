@@ -152,8 +152,46 @@ function sharkFoodCollision(e){
       }, 200);
       score++;
       document.getElementById('score').setAttribute('text','value',score);
+      animateShark(shark);
     }
   }
+}
+
+function animateShark(shark){
+  let sharkTopHead = shark.parentNode;
+  let sharkJaw = sharkTopHead.nextElementSibling;
+  let sharkWholeHead = sharkTopHead.parentNode;
+  let sharkBody = sharkWholeHead.nextElementSibling;
+  let sharkTail = sharkBody.lastElementChild;
+  sharkWholeHead.setAttribute('animation',"to: -25 0 0; dur: 500;");
+  sharkJaw.setAttribute("animation","to: -10 0 0; dur: 150;");
+  sharkBody.setAttribute("animation", "to: -20 0 0; dur: 500;");
+  sharkTail.setAttribute("animation", "to: -20 0 0; dur: 500;");
+
+  //return to initial position
+  setTimeout(function(){
+    sharkWholeHead.setAttribute('animation',"to: 0 4 0; dur:300;");
+    sharkBody.setAttribute("animation", "to: 0 -4 0; dur:300;");
+    sharkTail.setAttribute("animation", "to: 0 -4 0; dur:300;");
+  }, 1200);
+
+  setTimeout(function(){
+    //sharkWholeHead.setAttribute('rotation',"0 4 0");
+    sharkWholeHead.setAttribute('animation',"to: 0 -4 0; dur:1000;");
+    //sharkBody.setAttribute("rotation", "0 -4 0");
+    sharkBody.setAttribute("animation", "to: 0 4 0; dur:1000;");
+    //sharkTail.setAttribute("rotation", "0 -4 0");
+    sharkTail.setAttribute("animation", "to: 0 4 0; dur:1000;");
+  }, 1500);
+
+  setTimeout(function(){
+    sharkJaw.setAttribute("animation","to: 2 0 0; dur: 100;");
+  }, 3000);
+
+  setTimeout(function(){
+    //sharkJaw.setAttribute("rotation","2 0 0");
+    sharkJaw.setAttribute("animation","to: -10 0 0; dur: 3000;");
+  }, 3100);
 }
 
 AFRAME.registerComponent('handle-events', {

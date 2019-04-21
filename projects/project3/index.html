@@ -60,11 +60,11 @@
         handle-take>
       </a-entity>
 
-      <a-entity mixin="rotate" position="0 1 0" animation="to: 0 -360 0; dur: 8000000; easing: linear">
+      <a-entity mixin="rotate" position="0 1 0" animation="to: 0 -360 0; dur: 80000; easing: linear">
         <a-entity position="5 0 0">
           <a-entity mixin="flap" rotation="0 4 0" animation="to: 0 -4 0" pivot="0 0 1" >
             <a-entity>
-              <a-entity mixin="" obj-model="obj: #head-obj; mtl: #head-mtl" static-body handle-eat></a-entity>
+              <a-entity mixin="" material="color:orange;" obj-model="obj: #head-obj; mtl: #head-mtl" static-body handle-eat></a-entity>
             </a-entity>
             <a-entity mixin="flap" rotation="2 0 0" animation="to: -10 0 0; dur: 3000;" pivot="0 0 1">
               <a-entity mixin="" obj-model="obj: #jaw-obj; mtl: #jaw-mtl" static-body></a-entity>
@@ -72,10 +72,10 @@
           </a-entity>
           <a-entity mixin="flap" rotation="0 -4 0" animation="to: 0 4 0" pivot="0 0 1">
             <a-entity>
-              <a-entity mixin="" obj-model="obj: #body-obj; mtl: #body-mtl"></a-entity>
+              <a-entity mixin="" obj-model="obj: #body-obj; mtl: #body-mtl" static-body></a-entity>
             </a-entity>
             <a-entity mixin="flap" rotation="0 -4 0" animation="to: 0 4 0" pivot="0 0 0">
-              <a-entity mixin="" obj-model="obj: #tail-obj; mtl: #tail-mtl"></a-entity>
+              <a-entity mixin="" obj-model="obj: #tail-obj; mtl: #tail-mtl" static-body></a-entity>
             </a-entity>
           </a-entity>
         </a-entity>
@@ -211,13 +211,23 @@
         hit='false'>
       </a-box> -->
 
-      <a-entity geometry="primitive:cylinder;
+      <!-- ORIGINAL SEA FLOOR -->
+      <!-- <a-entity geometry="primitive:cylinder;
           radius:200;
           height:1;"
         position="0 -20 0"
         material="shader:gif;
         src:#sea_floor;
         repeat: 30 30;"
+        static-body>
+      </a-entity> -->
+
+      <!-- LO-FI SEA FLOOR -->
+      <a-entity geometry="primitive:cylinder;
+          radius:200;
+          height:1;"
+        position="0 -20 0"
+        material="color:brown;"
         static-body>
       </a-entity>
 
