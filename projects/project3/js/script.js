@@ -15,7 +15,7 @@ let inHand = false;
 let numberOfSharks = 10;
 let sharkMaxLife = 0.5;
 let sharkLifeLoss = 0.0005;
-let gameOver = false;
+let gameOver = true;
 let foodId = [
   ["#pizza-gltf", {x:1, y:1, z:1}],
   ["#hotdog-gltf", {x:0.05, y:0.05, z:0.05}],
@@ -100,12 +100,6 @@ function throwBall(){
     z: position[2]
   });
 
-  // ball.setAttribute('rotation',{
-  //   x: 90,
-  //   y: 0,
-  //   z: 0
-  // })
-
   ball.setAttribute('velocity', {
     x: velocity[0],
     y: velocity[1],
@@ -157,12 +151,12 @@ AFRAME.registerComponent('handle-take', {
 });
 
 function basketME(){
-  this.setAttribute('material', 'color:#24CAFF;');
+  this.setAttribute('scale', {x:0.6, y:0.6, z:0.6} );
   overBasket=true;
 }
 
 function basketML(){
-  this.setAttribute('material', 'color:#FFF;');
+  this.setAttribute('scale', {x:0.5, y:0.5, z:0.5} );
   overBasket=false;
 }
 
