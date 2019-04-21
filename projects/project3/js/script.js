@@ -16,6 +16,13 @@ let numberOfSharks = 10;
 let sharkMaxLife = 0.5;
 let sharkLifeLoss = 0.0005;
 let gameOver = false;
+let foodId = [
+  ["#pizza-gltf", {x:1, y:1, z:1}],
+  ["#hotdog-gltf", {x:0.05, y:0.05, z:0.05}],
+  ["#burger-gltf", {x:0.05, y:0.05, z:0.05}],
+  ["#pretzel-gltf", {x:0.005, y:0.005, z:0.005}]
+];
+let foodInHandId;
 
 // document.addEventListener('DOMContentLoaded', function() {
 //   let sharkHTML = "";
@@ -62,14 +69,15 @@ function throwBall(){
 
   let ball = document.createElement('a-entity');
   ball.setAttribute('id','ball');
-  ball.setAttribute('gltf-model', '#pizza-gltf');
+  ball.setAttribute('gltf-model', foodId[foodInHandId][0]);
   // ball.setAttribute('obj-model', {
   //   obj: '#pizza-obj',
   //   mtl: '#pizza-mtl'
   // });
+  ball.setAttribute('scale', foodId[foodInHandId][1]);;
   ball.setAttribute('dynamic-body', {
-    shape: 'sphere',
-    sphereRadius:0.3,
+    shape: 'box',
+    //sphereRadius:0.3,
     mass: 10,
     linearDamping: 0.1
   });
@@ -92,11 +100,11 @@ function throwBall(){
     z: position[2]
   });
 
-  ball.setAttribute('rotation',{
-    x: 90,
-    y: 0,
-    z: 0
-  })
+  // ball.setAttribute('rotation',{
+  //   x: 90,
+  //   y: 0,
+  //   z: 0
+  // })
 
   ball.setAttribute('velocity', {
     x: velocity[0],
@@ -113,14 +121,17 @@ function throwBall(){
 }
 
 function ballInHand(){
+  foodInHandId = Math.floor(Math.random()*foodId.length);
+  console.log(foodInHandId);
   let ball = document.createElement('a-entity');
   ball.setAttribute('id', 'ballInHand');
-  ball.setAttribute('gltf-model', '#pizza-gltf');
+  ball.setAttribute('gltf-model', foodId[foodInHandId][0]);
   ball.setAttribute('position', {
     x: 0,
     y: -0.5,
     z: -2
   });
+  ball.setAttribute('scale', foodId[foodInHandId][1]);
   ball.setAttribute('rotation',{
     x: 0,
     y: 90,
@@ -155,38 +166,6 @@ function basketML(){
   overBasket=false;
 }
 
-//
-//       <a-entity mixin="rotate" position="0 1 0" animation="to: 0 -360 0; dur: 800000; easing: linear">
-//         <a-entity position="5 0 0">
-//           <a-entity mixin="flap" rotation="0 4 0" animation="to: 0 -4 0" pivot="0 0 1" >
-//             <a-entity>
-//               <a-entity mixin="" obj-model="obj: #head-obj; mtl: #head-mtl" static-body handle-eat></a-entity>
-//             </a-entity>
-//             <a-entity mixin="flap" rotation="2 0 0" animation="to: -10 0 0; dur: 3000;" pivot="0 0 1">
-//               <a-entity mixin="" obj-model="obj: #jaw-obj; mtl: #jaw-mtl" static-body></a-entity>
-//             </a-entity>
-//             <a-entity
-//               geometry="primitive:box;
-//                 width:0.1;
-//                 depth:0.5;
-//                 height:0.1"
-//               position="0 0.5 1.5"
-//               material="color:green;" handle-life>
-//             </a-entity>
-//           </a-entity>
-//           <a-entity mixin="flap" rotation="0 -4 0" animation="to: 0 4 0" pivot="0 0 1">
-//             <a-entity>
-//               <a-entity mixin="" obj-model="obj: #body-obj; mtl: #body-mtl" static-body></a-entity>
-//             </a-entity>
-//             <a-entity mixin="flap" rotation="0 -4 0" animation="to: 0 4 0" pivot="0 0 0">
-//               <a-entity mixin="" obj-model="obj: #tail-obj; mtl: #tail-mtl" static-body></a-entity>
-//             </a-entity>
-//           </a-entity>
-//         </a-entity>
-//       </a-entity>
-
-
-
 AFRAME.registerComponent('handle-eat', {
   init: function () {
     let el = this.el;
@@ -201,7 +180,7 @@ AFRAME.registerComponent('handle-life', {
     if(!gameOver){
       let life = el.getAttribute("geometry").depth;
       life -= sharkLifeLoss;
-      console.log(life);
+      //console.log(life);
       if(life < 0){
         gameOver = true;
       } else{

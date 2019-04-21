@@ -28,7 +28,7 @@
 
   <body>
     <!-- <a-scene stats physics="debug:true;"> -->
-    <a-scene fog="type: exponential; color: #047f82; density: 0.02"
+    <a-scene physics="debug:true;" fog="type: exponential; color: #047f82; density: 0.02"
       physics='gravity:1.1; friction:2'>
       <a-assets >
         <img src="assets/images/sea-gif.gif" id="sea_floor">
@@ -43,7 +43,11 @@
         <a-asset-item id="tail-obj" src="assets/models/shark_tail.obj"></a-asset-item>
         <a-asset-item id="tail-mtl" src="assets/models/shark_tail.mtl"></a-asset-item>
 
+        <a-asset-item id="basket-gltf" src="assets/models/PicnicBasket.gltf"></a-asset-item>
         <a-asset-item id="pizza-gltf" src="assets/models/Pizza_slice.gltf"></a-asset-item>
+        <a-asset-item id="hotdog-gltf" src="assets/models/Hot_dog_01.gltf"></a-asset-item>
+        <a-asset-item id="burger-gltf" src="assets/models/Hamburger_01.gltf"></a-asset-item>
+        <a-asset-item id="pretzel-gltf" src="assets/models/Pretzel.gltf"></a-asset-item>
       </a-assets>
 
       <a-entity id='camera' camera look-controls wasd-controls position="0 1 0">
@@ -58,24 +62,16 @@
           </a-text>
       </a-entity>
 
-      <a-entity
-        geometry="primitive:box;
-          width:1;
-          depth:1
-          height:1;"
-        position="0 -5 -1.5"
-        material="color:white;"
-        handle-take>
-      </a-entity>
+      <a-entity position="0 -5 -2" gltf-model="#basket-gltf" scale="0.5 0.5 0.5" handle-take></a-entity>
 
-      <a-entity mixin="rotate" position="0 1 0" animation="to: 0 -360 0; dur: 800000; easing: linear">
+      <a-entity mixin="rotate" position="0 1 0" animation="to: 0 -360 0; dur: 80000; easing: linear">
         <a-entity position="5 0 0">
           <a-entity mixin="flap" rotation="0 4 0" animation="to: 0 -4 0" pivot="0 0 1" >
             <a-entity>
-              <a-entity mixin="" obj-model="obj: #head-obj; mtl: #head-mtl" static-body handle-eat></a-entity>
+              <a-entity mixin="" obj-model="obj: #head-obj; mtl: #head-mtl" static-body='shape:box' handle-eat></a-entity>
             </a-entity>
             <a-entity mixin="flap" rotation="2 0 0" animation="to: -10 0 0; dur: 3000;" pivot="0 0 1">
-              <a-entity mixin="" obj-model="obj: #jaw-obj; mtl: #jaw-mtl" static-body></a-entity>
+              <a-entity mixin="" obj-model="obj: #jaw-obj; mtl: #jaw-mtl"></a-entity>
             </a-entity>
             <a-entity
               geometry="primitive:box;
@@ -88,10 +84,10 @@
           </a-entity>
           <a-entity mixin="flap" rotation="0 -4 0" animation="to: 0 4 0" pivot="0 0 1">
             <a-entity>
-              <a-entity mixin="" obj-model="obj: #body-obj; mtl: #body-mtl" static-body></a-entity>
+              <a-entity mixin="" obj-model="obj: #body-obj; mtl: #body-mtl" static-body='shape:box'></a-entity>
             </a-entity>
             <a-entity mixin="flap" rotation="0 -4 0" animation="to: 0 4 0" pivot="0 0 0">
-              <a-entity mixin="" obj-model="obj: #tail-obj; mtl: #tail-mtl" static-body></a-entity>
+              <a-entity mixin="" obj-model="obj: #tail-obj; mtl: #tail-mtl" static-body='shape:box'></a-entity>
             </a-entity>
           </a-entity>
         </a-entity>
@@ -101,10 +97,10 @@
         <a-entity position="7 0 0">
           <a-entity mixin="flap" rotation="0 4 0" animation="to: 0 -4 0" pivot="0 0 1" >
             <a-entity>
-              <a-entity mixin="" obj-model="obj: #head-obj; mtl: #head-mtl" static-body handle-eat></a-entity>
+              <a-entity mixin="" obj-model="obj: #head-obj; mtl: #head-mtl" static-body='shape:box' handle-eat></a-entity>
             </a-entity>
             <a-entity mixin="flap" rotation="2 0 0" animation="to: -10 0 0; dur: 3000;" pivot="0 0 1">
-              <a-entity mixin="" obj-model="obj: #jaw-obj; mtl: #jaw-mtl" static-body></a-entity>
+              <a-entity mixin="" obj-model="obj: #jaw-obj; mtl: #jaw-mtl"></a-entity>
             </a-entity>
             <a-entity
               geometry="primitive:box;
@@ -117,10 +113,10 @@
           </a-entity>
           <a-entity mixin="flap" rotation="0 -4 0" animation="to: 0 4 0" pivot="0 0 1">
             <a-entity>
-              <a-entity mixin="" obj-model="obj: #body-obj; mtl: #body-mtl" static-body></a-entity>
+              <a-entity mixin="" obj-model="obj: #body-obj; mtl: #body-mtl" static-body='shape:box'></a-entity>
             </a-entity>
             <a-entity mixin="flap" rotation="0 -4 0" animation="to: 0 4 0" pivot="0 0 0">
-              <a-entity mixin="" obj-model="obj: #tail-obj; mtl: #tail-mtl" static-body></a-entity>
+              <a-entity mixin="" obj-model="obj: #tail-obj; mtl: #tail-mtl" static-body='shape:box'></a-entity>
             </a-entity>
           </a-entity>
         </a-entity>
@@ -130,10 +126,10 @@
         <a-entity position="10 0 0">
           <a-entity mixin="flap" rotation="0 4 0" animation="to: 0 -4 0" pivot="0 0 1" >
             <a-entity>
-              <a-entity mixin="" obj-model="obj: #head-obj; mtl: #head-mtl" static-body handle-eat></a-entity>
+              <a-entity mixin="" obj-model="obj: #head-obj; mtl: #head-mtl" static-body='shape:box' handle-eat></a-entity>
             </a-entity>
             <a-entity mixin="flap" rotation="2 0 0" animation="to: -10 0 0; dur: 3000;" pivot="0 0 1">
-              <a-entity mixin="" obj-model="obj: #jaw-obj; mtl: #jaw-mtl" static-body></a-entity>
+              <a-entity mixin="" obj-model="obj: #jaw-obj; mtl: #jaw-mtl"></a-entity>
             </a-entity>
             <a-entity
               geometry="primitive:box;
@@ -146,10 +142,97 @@
           </a-entity>
           <a-entity mixin="flap" rotation="0 -4 0" animation="to: 0 4 0" pivot="0 0 1">
             <a-entity>
-              <a-entity mixin="" obj-model="obj: #body-obj; mtl: #body-mtl" static-body></a-entity>
+              <a-entity mixin="" obj-model="obj: #body-obj; mtl: #body-mtl" static-body='shape:box'></a-entity>
             </a-entity>
             <a-entity mixin="flap" rotation="0 -4 0" animation="to: 0 4 0" pivot="0 0 0">
-              <a-entity mixin="" obj-model="obj: #tail-obj; mtl: #tail-mtl" static-body></a-entity>
+              <a-entity mixin="" obj-model="obj: #tail-obj; mtl: #tail-mtl" static-body='shape:box'></a-entity>
+            </a-entity>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+
+      <a-entity mixin="rotate" position="0 -4 0" animation="to: 0 -360 0; dur: 22000; easing: linear">
+        <a-entity position="8 0 0">
+          <a-entity mixin="flap" rotation="0 4 0" animation="to: 0 -4 0" pivot="0 0 1" >
+            <a-entity>
+              <a-entity mixin="" obj-model="obj: #head-obj; mtl: #head-mtl" static-body='shape:box' handle-eat></a-entity>
+            </a-entity>
+            <a-entity mixin="flap" rotation="2 0 0" animation="to: -10 0 0; dur: 3000;" pivot="0 0 1">
+              <a-entity mixin="" obj-model="obj: #jaw-obj; mtl: #jaw-mtl"></a-entity>
+            </a-entity>
+            <a-entity
+              geometry="primitive:box;
+                width:0.1;
+                depth:0.8;
+                height:0.1"
+              position="0 0.5 1.5"
+              material="color:green;" handle-life>
+            </a-entity>
+          </a-entity>
+          <a-entity mixin="flap" rotation="0 -4 0" animation="to: 0 4 0" pivot="0 0 1">
+            <a-entity>
+              <a-entity mixin="" obj-model="obj: #body-obj; mtl: #body-mtl" static-body='shape:box'></a-entity>
+            </a-entity>
+            <a-entity mixin="flap" rotation="0 -4 0" animation="to: 0 4 0" pivot="0 0 0">
+              <a-entity mixin="" obj-model="obj: #tail-obj; mtl: #tail-mtl" static-body='shape:box'></a-entity>
+            </a-entity>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+
+      <a-entity mixin="rotate" position="0 -1 0" animation="to: 0 -360 0; dur: 20000; easing: linear">
+        <a-entity position="15 0 0">
+          <a-entity mixin="flap" rotation="0 4 0" animation="to: 0 -4 0" pivot="0 0 1" >
+            <a-entity>
+              <a-entity mixin="" obj-model="obj: #head-obj; mtl: #head-mtl" static-body='shape:box' handle-eat></a-entity>
+            </a-entity>
+            <a-entity mixin="flap" rotation="2 0 0" animation="to: -10 0 0; dur: 3000;" pivot="0 0 1">
+              <a-entity mixin="" obj-model="obj: #jaw-obj; mtl: #jaw-mtl"></a-entity>
+            </a-entity>
+            <a-entity
+              geometry="primitive:box;
+                width:0.1;
+                depth:0.8;
+                height:0.1"
+              position="0 0.5 1.5"
+              material="color:green;" handle-life>
+            </a-entity>
+          </a-entity>
+          <a-entity mixin="flap" rotation="0 -4 0" animation="to: 0 4 0" pivot="0 0 1">
+            <a-entity>
+              <a-entity mixin="" obj-model="obj: #body-obj; mtl: #body-mtl" static-body='shape:box'></a-entity>
+            </a-entity>
+            <a-entity mixin="flap" rotation="0 -4 0" animation="to: 0 4 0" pivot="0 0 0">
+              <a-entity mixin="" obj-model="obj: #tail-obj; mtl: #tail-mtl" static-body='shape:box'></a-entity>
+            </a-entity>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+
+      <a-entity mixin="rotate" position="0 -7 0" animation="to: 0 -360 0; dur: 25000; easing: linear">
+        <a-entity position="12 0 0">
+          <a-entity mixin="flap" rotation="0 4 0" animation="to: 0 -4 0" pivot="0 0 1" >
+            <a-entity>
+              <a-entity mixin="" obj-model="obj: #head-obj; mtl: #head-mtl" static-body='shape:box' handle-eat></a-entity>
+            </a-entity>
+            <a-entity mixin="flap" rotation="2 0 0" animation="to: -10 0 0; dur: 3000;" pivot="0 0 1">
+              <a-entity mixin="" obj-model="obj: #jaw-obj; mtl: #jaw-mtl"></a-entity>
+            </a-entity>
+            <a-entity
+              geometry="primitive:box;
+                width:0.1;
+                depth:0.99;
+                height:0.1"
+              position="0 0.5 1.5"
+              material="color:green;" handle-life>
+            </a-entity>
+          </a-entity>
+          <a-entity mixin="flap" rotation="0 -4 0" animation="to: 0 4 0" pivot="0 0 1">
+            <a-entity>
+              <a-entity mixin="" obj-model="obj: #body-obj; mtl: #body-mtl" static-body='shape:box'></a-entity>
+            </a-entity>
+            <a-entity mixin="flap" rotation="0 -4 0" animation="to: 0 4 0" pivot="0 0 0">
+              <a-entity mixin="" obj-model="obj: #tail-obj; mtl: #tail-mtl" static-body='shape:box'></a-entity>
             </a-entity>
           </a-entity>
         </a-entity>
