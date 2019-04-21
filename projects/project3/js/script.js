@@ -11,6 +11,7 @@ author, and this description to match your project!
 ******************/
 let score = 0;
 let overBasket = false;
+let overPlay= false;
 let inHand = false;
 let numberOfSharks = 10;
 let sharkMaxLife = 0.5;
@@ -60,7 +61,12 @@ window.addEventListener('keypress', function(e){
   } else if (e.keyCode === 32 && overBasket){
     ballInHand();
     inHand = true;
+  } else if (e.keyCode === 32 && overPlay){
+    let startScreen = document.querySelector("#startScreen");
+    startScreen.parentNode.removeChild(startScreen);
+    gameOver = false;
   }
+
 });
 
 function throwBall(){
@@ -266,15 +272,16 @@ AFRAME.registerComponent('handle-events', {
     var el = this.el;  // <a-box>
     el.addEventListener('mouseenter', changeColorME);
     el.addEventListener('mouseleave', changeColorML);
-    el.addEventListener('collide', changeColorCollision);
   }
 });
 
 function changeColorME() {
-  this.setAttribute('color', '#24CAFF');
+  this.setAttribute('material', 'color:#24CAFF');
+  overPlay = true;
 }
 function changeColorML() {
-  this.setAttribute('color', '#EF2D5E');
+  this.setAttribute('material', 'color:#EF2D5E');
+  overPlay = false;
 }
 function changeColorCollision(){
   this.setAttribute('color', '#42f465');
