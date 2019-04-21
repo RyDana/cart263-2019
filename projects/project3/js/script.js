@@ -35,41 +35,22 @@ window.addEventListener('keypress', function(e){
   }
 });
 
-function ballInHand(){
-  let ball = document.createElement('a-entity');
-  ball.setAttribute('id', 'ballInHand');
-  ball.setAttribute('geometry', {
-    primitive: 'sphere',
-    radius: 0.2
-  });
-  ball.setAttribute('material', {
-    color: "#eee"
-  });
-  ball.setAttribute('position', {
-    x: 0,
-    y: 0,
-    z: -2
-  });
-  document.querySelector('#camera').append(ball);
-}
-
 function throwBall(){
   let ballToRemove = document.querySelector("#ballInHand");
   ballToRemove.parentNode.removeChild(ballToRemove);
 
   let ball = document.createElement('a-entity');
   ball.setAttribute('id','ball');
-  ball.setAttribute('geometry', {
-    primitive: 'sphere',
-    radius: 0.5
-  });
+  ball.setAttribute('gltf-model', '#pizza-gltf');
+  // ball.setAttribute('obj-model', {
+  //   obj: '#pizza-obj',
+  //   mtl: '#pizza-mtl'
+  // });
   ball.setAttribute('dynamic-body', {
     shape: 'sphere',
+    sphereRadius:0.3,
     mass: 10,
     linearDamping: 0.1
-  });
-  ball.setAttribute('material', {
-    color: "#eee"
   });
   ball.setAttribute('angularVelocity', {x: 0, y: 0, z: 0});
 
@@ -86,9 +67,15 @@ function throwBall(){
 
   ball.setAttribute('position', {
     x: position[0],
-    y: position[1] + 2,
+    y: position[1] + 1.5,
     z: position[2]
   });
+
+  ball.setAttribute('rotation',{
+    x: 90,
+    y: 0,
+    z: 0
+  })
 
   ball.setAttribute('velocity', {
     x: velocity[0],
@@ -102,6 +89,23 @@ function throwBall(){
       ball.parentNode.removeChild(ball);
     }
   }, 2000);
+}
+
+function ballInHand(){
+  let ball = document.createElement('a-entity');
+  ball.setAttribute('id', 'ballInHand');
+  ball.setAttribute('gltf-model', '#pizza-gltf');
+  ball.setAttribute('position', {
+    x: 0,
+    y: -0.5,
+    z: -2
+  });
+  ball.setAttribute('rotation',{
+    x: 0,
+    y: 90,
+    z: 20
+  })
+  document.querySelector('#camera').append(ball);
 }
 
 function positionAndVelocityCalculator(multiplier, theta, phi){
