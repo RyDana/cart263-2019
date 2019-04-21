@@ -49,6 +49,10 @@ window.addEventListener('touchstart', function() {
   } else if (overBasket){
     ballInHand();
     inHand = true;
+  } else if (overPlay){
+    let startScreen = document.querySelector("#startScreen");
+    startScreen.parentNode.removeChild(startScreen);
+    gameOver = false;
   }
 });
 
