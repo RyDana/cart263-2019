@@ -31,14 +31,23 @@
 
   <body>
     <!-- <a-scene stats physics="debug:true;"> -->
+
+    <!-- SCENE (WITH FOG ANF PHYSICS)-->
     <a-scene fog="type: exponential; color: #047f82; density: 0.02"
       physics='gravity:1.1; friction:2'>
+
+      <!-- ASSETS -->
       <a-assets >
+        <!-- IMAGES -->
         <img src="assets/images/sea-gif.gif" id="sea_floor">
+
+        <!-- ANIMATIONS -->
         <a-mixin id="flap" animation="property: rotation; dir: alternate; loop: true; easing:easeInOutCubic;"></a-mixin>
         <a-mixin id="rotate" animation="property: rotation; loop: true"></a-mixin>
         <a-mixin id="float" animation="property: position; dir: alternate; loop: true; easing:easeInOutCubic;"></a-mixin>
 
+        <!-- 3D MODELS -->
+        <!-- Shark -->
         <a-asset-item id="head-obj" src="assets/models/shark_head.obj"></a-asset-item>
         <a-asset-item id="head-mtl" src="assets/models/shark_head.mtl"></a-asset-item>
         <a-asset-item id="jaw-obj" src="assets/models/shark_jaw.obj"></a-asset-item>
@@ -47,16 +56,18 @@
         <a-asset-item id="body-mtl" src="assets/models/shark_body.mtl"></a-asset-item>
         <a-asset-item id="tail-obj" src="assets/models/shark_tail.obj"></a-asset-item>
         <a-asset-item id="tail-mtl" src="assets/models/shark_tail.mtl"></a-asset-item>
-
+        <!-- Food and Basket -->
         <a-asset-item id="basket-gltf" src="assets/models/PicnicBasket.gltf"></a-asset-item>
         <a-asset-item id="pizza-gltf" src="assets/models/PizzaSlice_01.gltf"></a-asset-item>
         <a-asset-item id="hotdog-gltf" src="assets/models/Hot_dog_01.gltf"></a-asset-item>
         <a-asset-item id="burger-gltf" src="assets/models/Hamburger_01.gltf"></a-asset-item>
         <a-asset-item id="pretzel-gltf" src="assets/models/Pretzel.gltf"></a-asset-item>
 
+        <!-- FONTS -->
         <a-asset-item id="exoFont" src="https://cdn.glitch.com/c719c986-c0c5-48b8-967c-3cd8b8aa17f3%2Fexo2Black.typeface.json?1490305922150"></a-asset-item>
       </a-assets>
 
+      <!-- CAMERA -->
       <a-entity id='camera' camera look-controls pointerLockEnabled position="0 1 0">
           <a-cursor color='#fff'>
           </a-cursor>
@@ -69,6 +80,7 @@
           </a-text>
       </a-entity>
 
+      <!-- INTRO TEXT -->
       <a-entity id="startScreen" position="-4 0 -5">
         <a-entity position="0 5 0" scale="1 1 1" text-geometry="value:SHARKS; font:#exoFont; bevelEnabled:true; bevelSize:0.1; bevelThickness:0.1; curveSegments:0.5; size:1.5; height:0.5;" material="color:#EF2D5E">
         </a-entity>
@@ -106,7 +118,7 @@
         </a-entity>
       </a-entity>
 
-
+      <!-- BASKET AND BUOY -->
       <a-entity mixin="float" position="-1 -5 -2" gltf-model="#basket-gltf" scale="0.5 0.5 0.5" animation="to: -1 -4.5 -2" handle-take></a-entity>
       <a-entity mixin="float" position="-1 5 -2"
         geometry="primitive:box;
@@ -115,13 +127,13 @@
           height:15"
         material="color:gray;"
         animation="to: -1 5.5 -2" ></a-entity>
-
       <a-entity mixin="float" position="-1 12 -2"
         geometry="primitive:sphere;
           radius:2"
         material="color:yellow;"
         animation="to: -1 12.5 -2" ></a-entity>
 
+      <!-- SHARKS -->
       <a-entity mixin="rotate" position="0 1 0" animation="to: 0 -360 0; dur: 80000; easing: linear">
         <a-entity position="5 0 0">
           <a-entity mixin="flap" rotation="0 4 0" animation="to: 0 -4 0" pivot="0 0 1" >
@@ -316,10 +328,11 @@
         static-body>
       </a-entity> -->
 
+      <!-- SKY -->
       <a-sky color="#02163a" poaition='0 -200 0'>
       </a-sky>
 
-
+      <!-- LIGHTS -->
       <a-entity light="type: ambient; color: #BBB"></a-entity>
       <a-entity light="type: directional;
           color: #ffff60;
@@ -327,6 +340,7 @@
         position="9.8 -2.5 5.1">
       </a-entity>
 
+      <!-- OCEAN -->
       <a-ocean color="#1057c9"
         amplitude='1'
         aplitudeVariance='1.5'
