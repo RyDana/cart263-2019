@@ -196,6 +196,20 @@ AFRAME.registerComponent('handle-life', {
       //console.log(life);
       if(life < 0){
         gameOver = true;
+        let gameOverText = document.createElement('a-entity');
+        gameOverText.setAttribute('position', {x:-2, y:0, z:-5});
+        gameOverText.setAttribute('text-geometry', {
+          value:'GAME OVER',
+          font:"#exoFont",
+          bevelEnabled:true,
+          bevelSize:0.05,
+          bevelThickness:0.05,
+          curveSegments:0.01,
+          size:0.5,
+          height:0.5
+        });
+        gameOverText.setAttribute('material', {color:"#EF2D5E"});
+        document.querySelector('#camera').appendChild(gameOverText);
       } else{
         if(life < 0.2){
           color = 'red'
@@ -229,14 +243,16 @@ function sharkFoodCollision(e){
       setTimeout(function(){
         body.parentNode.removeChild(body);
       }, 100);
-      shark.parentNode.nextElementSibling.nextElementSibling.setAttribute('geometry',{
-        primitive:'box',
-        width:0.1,
-        depth: sharkMaxLife,
-        height:0.1
-      });
-      score++;
-      document.getElementById('score').setAttribute('text','value',score);
+      if(!gameOver){
+        shark.parentNode.nextElementSibling.nextElementSibling.setAttribute('geometry',{
+          primitive:'box',
+          width:0.1,
+          depth: sharkMaxLife,
+          height:0.1
+        });
+        score++;
+        document.getElementById('score').setAttribute('text','value',score);
+      }
       animateShark(shark);
     }
   }
