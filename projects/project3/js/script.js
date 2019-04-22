@@ -18,10 +18,10 @@ let sharkMaxLife = 0.5;
 let sharkLifeLoss = 0.0005;
 let gameOver = true;
 let foodId = [
-  ["#pizza-gltf", {x:1, y:1, z:1}],
-  ["#hotdog-gltf", {x:0.05, y:0.05, z:0.05}],
-  ["#burger-gltf", {x:0.05, y:0.05, z:0.05}],
-  ["#pretzel-gltf", {x:0.005, y:0.005, z:0.005}]
+  ["#pizza-gltf", {x:0.005, y:0.005, z:0.005}, {x:0, y:0, z:0}],
+  ["#hotdog-gltf", {x:0.04, y:0.04, z:0.04},{x:0, y:-0.2, z:0}],
+  ["#burger-gltf", {x:0.05, y:0.05, z:0.05},{x:0, y:-0.2, z:0}],
+  ["#pretzel-gltf", {x:0.005, y:0.005, z:0.005},{x:0, y:-0.5, z:0}]
 ];
 let foodInHandId;
 
@@ -76,15 +76,16 @@ window.addEventListener('keypress', function(e){
 function throwBall(){
   let ballToRemove = document.querySelector("#ballInHand");
   ballToRemove.parentNode.removeChild(ballToRemove);
-
   let ball = document.createElement('a-entity');
+  let model = document.createElement('a-entity');
   ball.setAttribute('id','ball');
-  ball.setAttribute('gltf-model', foodId[foodInHandId][0]);
+  model.setAttribute('gltf-model', foodId[foodInHandId][0]);
   // ball.setAttribute('obj-model', {
   //   obj: '#pizza-obj',
   //   mtl: '#pizza-mtl'
   // });
-  ball.setAttribute('scale', foodId[foodInHandId][1]);;
+  model.setAttribute('scale', foodId[foodInHandId][1]);
+  model.setAttribute('position', foodId[foodInHandId][2]);
   ball.setAttribute('dynamic-body', {
     shape: 'box',
     //sphereRadius:0.3,
@@ -92,6 +93,8 @@ function throwBall(){
     linearDamping: 0.1
   });
   ball.setAttribute('angularVelocity', {x: 0, y: 0, z: 0});
+
+  ball.appendChild(model);
 
 
   let camera = document.querySelector('a-entity');
@@ -128,17 +131,23 @@ function ballInHand(){
   foodInHandId = Math.floor(Math.random()*foodId.length);
   console.log(foodInHandId);
   let ball = document.createElement('a-entity');
+  let model = document.createElement('a-entity');
   ball.setAttribute('id', 'ballInHand');
-  ball.setAttribute('gltf-model', foodId[foodInHandId][0]);
+
+  model.setAttribute('gltf-model', foodId[foodInHandId][0]);
+  model.setAttribute('scale', foodId[foodInHandId][1]);
+  model.setAttribute('position', foodId[foodInHandId][2]);
+
+  ball.appendChild(model);
   ball.setAttribute('position', {
     x: 0,
     y: -0.5,
     z: -2
   });
-  ball.setAttribute('scale', foodId[foodInHandId][1]);
+
   ball.setAttribute('rotation',{
     x: 0,
-    y: 90,
+    y: 40,
     z: 20
   })
   document.querySelector('#camera').append(ball);

@@ -9,18 +9,18 @@
 
     <!-- Library script(s) -->
     <script src="js/libraries/Pizzicato.js"></script>
-    <script src="https://aframe.io/releases/0.9.0/aframe.min.js"></script>
+    <!-- <script src="https://aframe.io/releases/0.9.0/aframe.min.js"></script>
     <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-component.min.js"></script>
     <script src="https://unpkg.com/aframe-animation-component@5.1.2/dist/aframe-animation-component.min.js"></script>
     <script src="https://unpkg.com/aframe-physics-system@1.4.0/dist/aframe-physics-system.min.js"></script>
     <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.0.0/dist/aframe-extras.min.js"></script>
-    <script src="https://unpkg.com/aframe-text-geometry-component@^0.5.0/dist/aframe-text-geometry-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-text-geometry-component@^0.5.0/dist/aframe-text-geometry-component.min.js"></script> -->
 
-    <!-- <script src="js/libraries/aframe.min.js"></script>
+    <script src="js/libraries/aframe.min.js"></script>
     <script src="js/libraries/aframe-gif-component.min.js"></script>
     <script src="js/libraries/aframe-animation-component.min.js"></script>
     <script src="js/libraries/aframe-physics-system.min.js"></script>
-    <script src="js/libraries/aframe-extras.min.js"></script> -->
+    <script src="js/libraries/aframe-extras.min.js"></script>
 
     <!-- My script(s) -->
     <script src="js/script.js"></script>
@@ -29,7 +29,7 @@
 
   <body>
     <!-- <a-scene stats physics="debug:true;"> -->
-    <a-scene fog="type: exponential; color: #047f82; density: 0.02"
+    <a-scene physics="debug:true;" fog="type: exponential; color: #047f82; density: 0.02"
       physics='gravity:1.1; friction:2'>
       <a-assets >
         <img src="assets/images/sea-gif.gif" id="sea_floor">
@@ -47,7 +47,7 @@
         <a-asset-item id="tail-mtl" src="assets/models/shark_tail.mtl"></a-asset-item>
 
         <a-asset-item id="basket-gltf" src="assets/models/PicnicBasket.gltf"></a-asset-item>
-        <a-asset-item id="pizza-gltf" src="assets/models/Pizza_slice.gltf"></a-asset-item>
+        <a-asset-item id="pizza-gltf" src="assets/models/PizzaSlice_01.gltf"></a-asset-item>
         <a-asset-item id="hotdog-gltf" src="assets/models/Hot_dog_01.gltf"></a-asset-item>
         <a-asset-item id="burger-gltf" src="assets/models/Hamburger_01.gltf"></a-asset-item>
         <a-asset-item id="pretzel-gltf" src="assets/models/Pretzel.gltf"></a-asset-item>
