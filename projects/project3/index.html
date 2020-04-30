@@ -9,9 +9,9 @@
 
     <!-- Library script(s) -->
     <!-- For sounds -->
-    <script src="js/libraries/Pizzicato.js"></script>
+    <!-- <script src="js/libraries/Pizzicato.js"></script> -->
     <!-- Main A-Frame -->
-    <script src="https://aframe.io/releases/0.9.0/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/1.0.0/aframe.min.js"></script>
     <!-- Creates textures out of gifs -->
     <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-component.min.js"></script>
     <!-- Manipilates animations -->
@@ -33,7 +33,7 @@
     <!-- <a-scene stats physics="debug:true;"> -->
 
     <!-- SCENE (WITH FOG ANF PHYSICS)-->
-    <a-scene fog="type: exponential; color: #047f82; density: 0.02"
+    <a-scene fog="type: exponential; color: #047f82; density: 0.05"
       physics='gravity:1.1; friction:2'>
 
       <!-- ASSETS -->
@@ -310,12 +310,12 @@
 
       <!-- ORIGINAL SEA FLOOR -->
       <a-entity geometry="primitive:cylinder;
-          radius:100;
+          radius: 60;
           height:1;"
         position="0 -20 0"
         material="shader:gif;
         src:#sea_floor;
-        repeat: 15 15;"
+        repeat: 5 5;"
         static-body>
       </a-entity>
 
